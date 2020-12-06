@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from 'utils/dbConnect';
-import User, { IUser } from 'models/User';
+import User, { IUser, Padder } from 'models/User';
 import { initMiddleware, validate } from 'utils/middleware';
 import SignUpValidation from 'validation/singup.validation';
 
@@ -12,8 +12,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             case 'POST': {
                 await dbConnect();
                 await middleware(req, res);
+                const padder = new Padder(4);
+                const hash = padder.Pad(
+                    await User.countDocuments({
+                        nickname: req.body.nickname
+                    })
+                );
                 const user: IUser = new User({
-                    username: req.body.username,
+                    nickname: req.body.nickname,
+                    hash: hash,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
                     email: req.body.email,
                     password: req.body.password,
                     dateOfBirth: req.body.dateOfBirth,
@@ -34,16 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 break;
             }
             default:
-                res.status(400).json(
-                    JSON.stringify(
-                        {
-                            success: false,
-                            error: `method '${req.method}' is invalid`
-                        },
-                        null,
-                        4
-                    )
-                );
+                throw [{ value: req.method, msg: `method is invalid` }];
         }
     } catch (error) {
         res.status(400).json(

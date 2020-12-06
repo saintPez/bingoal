@@ -14,7 +14,7 @@ export const validate = (validations: ValidationChain[]) => {
             return next();
         }
 
-        res.status(422).json({ succes: false, error: errors.array() });
+        res.status(422).json({ success: false, error: errors.array() });
     };
 };
 

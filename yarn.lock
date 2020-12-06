@@ -206,18 +206,6 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
-"@types/validate.js@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@types/validate.js/-/validate.js-0.11.0.tgz#121a83aecfdb848f46a4c796644e0da7cb1633c8"
-  integrity sha512-RnMxYwlFMG6jP0+TyJ9PDNfuIzZQqgfNIftyDFhwYQJuHBBuBBevi7fuNC5FVZxwrOV4eJUJuArDlMqIqZInMA==
-  dependencies:
-    validate.js "*"
-
-"@types/validator@^13.1.1":
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.1.1.tgz#8d220ae4851a1e745764c7ca72294b6d46aeb533"
-  integrity sha512-/39uXOKe1KV4ElXb8cp0RVyeRn9X1QRwllComMMql+FQ9nhmTx0Yhw+kJtccPSShsjma+KXjW/TiXyGUNqNn+w==
-
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"
@@ -4251,12 +4239,7 @@ util@^0.11.0:
   dependencies:
     inherits "2.0.3"
 
-validate.js@*, validate.js@^0.13.1:
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/validate.js/-/validate.js-0.13.1.tgz#b58bfac04a0f600a340f62e5227e70d95971e92a"
-  integrity sha512-PnFM3xiZ+kYmLyTiMgTYmU7ZHkjBZz2/+F0DaALc/uUtVzdCt1wAosvYJ5hFQi/hz8O4zb52FQhHZRC+uVkJ+g==
-
-validator@^13.1.1, validator@^13.5.1:
+validator@^13.1.1:
   version "13.5.1"
   resolved "https://registry.yarnpkg.com/validator/-/validator-13.5.1.tgz#3926dfdd07a7e7325ab657fe46f2143eac55f076"
   integrity sha512-s+7LW1Xi0OzPNfGN7Hb2vk0YB/epp9KFHHGC5JtqZOE1dUkN4ULPFZAQ1inCu7ceAsWmOJu6sn9cnwm3R+ghWQ==

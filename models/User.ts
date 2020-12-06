@@ -2,17 +2,35 @@ import { Schema, model, models, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
-    username: string;
+    nickname: string;
+    hash: string;
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
-    admin: boolean;
     dateOfBirth: Date;
+    admin: boolean;
+    image: string;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 }
 
 const userSchema = new Schema({
-    username: {
+    nickname: {
+        type: String,
+        required: true,
+        min: 4
+    },
+    hash: {
+        type: String,
+        min: 4
+    },
+    firstname: {
+        type: String,
+        required: true,
+        min: 4
+    },
+    lastname: {
         type: String,
         required: true,
         min: 4
@@ -36,6 +54,11 @@ const userSchema = new Schema({
         type: Boolean,
         required: false,
         default: false
+    },
+    image: {
+        type: String,
+        required: false,
+        default: 'profile'
     }
 });
 
@@ -56,5 +79,26 @@ userSchema.method(
         return await bcrypt.compare(password, this.password);
     }
 );
+
+export class Padder {
+
+    len: number;
+    pad: string;
+    pads: string = '';
+
+    constructor(len = 1, pad = '0') {
+        this.len = len;
+        this.pad = pad;
+
+        while (this.pads.length < len) {
+            this.pads += this.pad;
+        }
+    }
+
+    Pad(what: number) {
+        let s = what.toString();
+        return this.pads.substring(0, this.pads.length - s.length) + s;
+    }
+}
 
 export default models.User || model<IUser>('User', userSchema);

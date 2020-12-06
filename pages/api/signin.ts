@@ -16,31 +16,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     email: req.body.email
                 });
                 if (!user)
-                    return res.status(400).json(
-                        JSON.stringify(
-                            {
-                                success: false,
-                                error: 'email is not correct'
-                            },
-                            null,
-                            4
-                        )
-                    );
+                    throw {
+                        value: req.body.email,
+                        msg: 'email is not correct',
+                        param: 'email',
+                        location: 'body'
+                    };
 
                 const correctPassword: boolean = await user.validatePassword(
                     req.body.password
                 );
                 if (!correctPassword)
-                    return res.status(400).json(
-                        JSON.stringify(
-                            {
-                                success: false,
-                                error: 'password is not correct'
-                            },
-                            null,
-                            4
-                        )
-                    );
+                    throw {
+                        value: req.body.password,
+                        msg: 'password is not correct',
+                        param: 'password',
+                        location: 'body'
+                    };
 
                 res.status(201).json(
                     JSON.stringify(
@@ -55,16 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 break;
             }
             default:
-                res.status(400).json(
-                    JSON.stringify(
-                        {
-                            success: false,
-                            error: `method '${req.method}' is invalid`
-                        },
-                        null,
-                        4
-                    )
-                );
+                throw [{ value: req.method, msg: `method is invalid` }];
         }
     } catch (error) {
         res.status(400).json(

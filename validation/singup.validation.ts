@@ -2,17 +2,42 @@ import User from 'models/User';
 import { checkSchema, ValidationChain } from 'express-validator';
 
 const SignUpValidation: ValidationChain[] = checkSchema({
-    username: {
+    nickname: {
+        isString: {
+            errorMessage: 'nickname must be a string'
+        },
+        isLength: {
+            options: {
+                min: 4,
+            },
+            errorMessage: 'nickname must be at least 4 characters'
+        }
+    },
+    firstname: {
+        isString: {
+            errorMessage: 'firstname must be a string'
+        },
         isLength: {
             options: {
                 min: 4
             },
-            errorMessage: 'email must be at least 4 characters'
+            errorMessage: 'firstname must be at least 4 characters'
+        }
+    },
+    lastname: {
+        isString: {
+            errorMessage: 'lastname must be a string'
+        },
+        isLength: {
+            options: {
+                min: 4
+            },
+            errorMessage: 'lastname must be at least 4 characters'
         }
     },
     email: {
         isEmail: {
-            errorMessage: 'invalid email'
+            errorMessage: 'email must be a valid email'
         },
         custom: {
             options: async (value) => {
@@ -22,6 +47,9 @@ const SignUpValidation: ValidationChain[] = checkSchema({
         }
     },
     password: {
+        isString: {
+            errorMessage: 'password must be a string'
+        },
         isLength: {
             options: {
                 min: 8
@@ -31,7 +59,7 @@ const SignUpValidation: ValidationChain[] = checkSchema({
     },
     dateOfBirth: {
         isDate: {
-            errorMessage: 'dateOfBirth should be type Date'
+            errorMessage: 'dateOfBirth should be a date'
         }
     }
 });
