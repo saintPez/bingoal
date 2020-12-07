@@ -8,7 +8,7 @@ const SignUpValidation: ValidationChain[] = checkSchema({
         },
         isLength: {
             options: {
-                min: 4,
+                min: 4
             },
             errorMessage: 'nickname must be at least 4 characters'
         }

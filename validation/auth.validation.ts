@@ -38,7 +38,7 @@ export const SignUpValidation: ValidationChain[] = checkSchema({
         optional: true,
         isBoolean: {
             errorMessage: 'admin should be type boolean'
-        },
+        }
     }
 });
 

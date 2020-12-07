@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import jwt, { Secret } from 'jsonwebtoken';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
 import { initMiddleware, validate } from 'utils/middleware';
@@ -34,11 +35,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'body'
                     };
 
-                res.status(201).json(
+                const token: Secret = await jwt.sign(
+                    { _id: user._id },
+                    process.env.TOKEN_SECRET,
+                    {
+                        expiresIn: 60 * 60 * 24
+                    }
+                );
+
+                res.status(200).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: user
+                            data: user,
+                            token: token,
+                            param: 'token'
                         },
                         null,
                         4

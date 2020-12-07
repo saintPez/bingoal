@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import jwt, { Secret } from 'jsonwebtoken';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
 import { initMiddleware, validate } from 'utils/middleware';
@@ -14,9 +15,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 await middleware(req, res);
 
                 const pads = '0000';
-                const hash = (await User.countDocuments({
-                    nickname: req.body.nickname
-                })).toString();
+                const hash = (
+                    await User.countDocuments({
+                        nickname: req.body.nickname
+                    })
+                ).toString();
 
                 const user: IUser = new User({
                     nickname: req.body.nickname,
@@ -28,14 +31,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     dateOfBirth: req.body.dateOfBirth,
                     admin: false
                 });
-                
+
                 user.password = await user.encryptPassword(user.password);
                 const newUser = await user.save();
+                const token: Secret = await jwt.sign(
+                    { _id: newUser._id },
+                    process.env.TOKEN_SECRET,
+                    {
+                        expiresIn: 60 * 60 * 24,
+                    }
+                );
                 res.status(201).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: newUser
+                            data: newUser,
+                            token: token,
+                            param: 'token'
                         },
                         null,
                         4

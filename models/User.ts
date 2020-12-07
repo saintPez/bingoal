@@ -2,6 +2,7 @@ import { Schema, model, models, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
+    _id: Schema.Types.ObjectId;
     nickname: string;
     hash: string;
     firstname: string;
@@ -64,16 +65,20 @@ const userSchema = new Schema({
         required: false,
         default: 'profile'
     },
-    wonGames: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Game',
-        default: []
-    }],
-    purchasedGames: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Game',
-        default: []
-    }]
+    wonGames: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Game',
+            default: []
+        }
+    ],
+    purchasedGames: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Game',
+            default: []
+        }
+    ]
 });
 
 userSchema.set('versionKey', false);

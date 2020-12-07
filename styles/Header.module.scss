@@ -1,103 +1,103 @@
 .header {
-	box-sizing: border-box;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	min-height: 64px;
-	padding: 0 1.5rem;
-	text-align: left;
-	border-bottom: 1px solid #eaeaea;
-	flex-wrap: wrap;
-	position: sticky;
-	top: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 64px;
+    padding: 0 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #eaeaea;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
 
-	nav {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
 
-		a {
-			color: #666666;
-			font-weight: normal;
-			padding: 0 0.75rem;
-			display: flex;
-			align-items: center;
-		}
+        a {
+            color: #666666;
+            font-weight: normal;
+            padding: 0 0.75rem;
+            display: flex;
+            align-items: center;
+        }
 
-		a:hover,
-		a:active {
-			cursor: pointer;
-			color: #000000;
-		}
+        a:hover,
+        a:active {
+            cursor: pointer;
+            color: #000000;
+        }
 
-		a:focus {
-			color: #000000;
-			text-shadow: 0px 0px 1px #000000;
-		}
-	}
+        a:focus {
+            color: #000000;
+            text-shadow: 0px 0px 1px #000000;
+        }
+    }
 
-	a {
-		margin: auto 0;
-		font-weight: bolder;
-		font-size: 16px;
-		text-decoration: none;
-	}
+    a {
+        margin: auto 0;
+        font-weight: bolder;
+        font-size: 16px;
+        text-decoration: none;
+    }
 }
 
 .username {
-	color: #000000;
-	text-shadow: 0px 0px 1px #000000;
-	padding: 0.75rem 0.75rem;
+    color: #000000;
+    text-shadow: 0px 0px 1px #000000;
+    padding: 0.75rem 0.75rem;
 }
 
 .profile {
-	color: #666666;
-	font-weight: normal;
-	font-size: 16px;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-	padding: 0 0.75rem;
-	display: flex;
-	align-items: center;
-	border: 0;
-	text-decoration: none;
-	background: none;
-	outline: none;
+    color: #666666;
+    font-weight: normal;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+    border: 0;
+    text-decoration: none;
+    background: none;
+    outline: none;
 
-	span {
-		padding: 0.75rem;
-	}
+    span {
+        padding: 0.75rem;
+    }
 
-	ul {
-		background-color: #ffffff;
-		border: 1px solid #eaeaea;
-		padding: 0;
-		list-style: none;
-		position: absolute;
-		right: 0px;
-		top: 32px;
-		min-width: 147px;
-		box-sizing: border-box;
-		padding: 0.75rem;
-		display: none;
-	}
+    ul {
+        background-color: #ffffff;
+        border: 1px solid #eaeaea;
+        padding: 0;
+        list-style: none;
+        position: absolute;
+        right: 0px;
+        top: 32px;
+        min-width: 147px;
+        box-sizing: border-box;
+        padding: 0.75rem;
+        display: none;
+    }
 
-	img {
-		border-radius: 100%;
-	}
+    img {
+        border-radius: 100%;
+    }
 }
 
 .profile:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .profile:focus > ul {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 // .footer {

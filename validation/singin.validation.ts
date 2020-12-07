@@ -5,7 +5,7 @@ const SignInValidation: ValidationChain[] = checkSchema({
     email: {
         isEmail: {
             errorMessage: 'Invalid email'
-        },
+        }
     },
     password: {
         isLength: {

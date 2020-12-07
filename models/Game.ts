@@ -1,6 +1,7 @@
 import { Schema, model, models, Document } from 'mongoose';
 
 export interface IGame extends Document {
+    _id: Schema.Types.ObjectId;
     played: boolean;
     cartons: Schema.Types.ObjectId[];
     winningCartons: Schema.Types.ObjectId[];
@@ -14,16 +15,26 @@ const gameSchema = new Schema({
         type: Boolean,
         default: false
     },
-    cartons: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Carton',
-        default: []
-    }],
-    winningCartons: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Carton',
-        default: []
-    }],
+    cartons: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Carton',
+            default: []
+        }
+    ],
+    balls: [
+        {
+            type: Number,
+            default: []
+        }
+    ],
+    winningCartons: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Carton',
+            default: []
+        }
+    ],
     gameDate: {
         type: Date,
         required: true,
