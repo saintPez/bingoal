@@ -11,29 +11,33 @@ export interface IUser extends Document {
     dateOfBirth: Date;
     admin: boolean;
     image: string;
+    wonGames: Schema.Types.ObjectId;
+    purchasedGames: Schema.Types.ObjectId;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const userSchema = new Schema({
     nickname: {
         type: String,
         required: true,
-        min: 4
+        minlength: 4
     },
     hash: {
         type: String,
-        min: 4
+        minlength: 4
     },
     firstname: {
         type: String,
         required: true,
-        min: 4
+        minlength: 4
     },
     lastname: {
         type: String,
         required: true,
-        min: 4
+        minlength: 4
     },
     email: {
         type: String,
@@ -44,7 +48,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        min: 8
+        minlength: 8
     },
     dateOfBirth: {
         type: Date,
@@ -59,7 +63,17 @@ const userSchema = new Schema({
         type: String,
         required: false,
         default: 'profile'
-    }
+    },
+    wonGames: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Game',
+        default: []
+    }],
+    purchasedGames: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Game',
+        default: []
+    }]
 });
 
 userSchema.set('versionKey', false);
@@ -79,26 +93,5 @@ userSchema.method(
         return await bcrypt.compare(password, this.password);
     }
 );
-
-export class Padder {
-
-    len: number;
-    pad: string;
-    pads: string = '';
-
-    constructor(len = 1, pad = '0') {
-        this.len = len;
-        this.pad = pad;
-
-        while (this.pads.length < len) {
-            this.pads += this.pad;
-        }
-    }
-
-    Pad(what: number) {
-        let s = what.toString();
-        return this.pads.substring(0, this.pads.length - s.length) + s;
-    }
-}
 
 export default models.User || model<IUser>('User', userSchema);
