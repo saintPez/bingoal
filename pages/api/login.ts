@@ -1,51 +1,56 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import cors from 'cors';
 import jwt, { Secret } from 'jsonwebtoken';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
 import { initMiddleware, validate } from 'utils/middleware';
-import SignUpValidation from 'validation/singup.validation';
+import loginValidation from 'validation/login.validation';
 
-const middleware = initMiddleware(validate(SignUpValidation));
+const validateReq = initMiddleware(validate(loginValidation));
+const middlewareCors = initMiddleware(cors());
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
+        await middlewareCors(req, res);
         switch (req.method) {
             case 'POST': {
                 await dbConnect();
-                await middleware(req, res);
-
-                const pads = '0000';
-                const hash = (
-                    await User.countDocuments({
-                        nickname: req.body.nickname
-                    })
-                ).toString();
-
-                const user: IUser = new User({
-                    nickname: req.body.nickname,
-                    hash: pads.substring(0, pads.length - hash.length) + hash,
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    email: req.body.email,
-                    password: req.body.password,
-                    dateOfBirth: req.body.dateOfBirth,
-                    admin: false
+                await validateReq(req, res);
+                const user: IUser = await User.findOne({
+                    email: req.body.email
                 });
+                if (!user)
+                    throw {
+                        value: req.body.email,
+                        msg: 'email is not correct',
+                        param: 'email',
+                        location: 'body'
+                    };
 
-                user.password = await user.encryptPassword(user.password);
-                const newUser = await user.save();
+                const correctPassword: boolean = await user.validatePassword(
+                    req.body.password
+                );
+                if (!correctPassword)
+                    throw {
+                        value: req.body.password,
+                        msg: 'password is not correct',
+                        param: 'password',
+                        location: 'body'
+                    };
+
                 const token: Secret = await jwt.sign(
-                    { _id: newUser._id },
+                    { _id: user._id },
                     process.env.TOKEN_SECRET,
                     {
-                        expiresIn: 60 * 60 * 24,
+                        expiresIn: 60 * 60 * 24
                     }
                 );
-                res.status(201).json(
+
+                res.status(200).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: newUser,
+                            data: user,
                             token: token,
                             param: 'token'
                         },

@@ -7,7 +7,7 @@ interface IPayload {
     exp: number;
 }
 
-const TokenValidation: ValidationChain[] = checkSchema({
+const validateAuth: ValidationChain[] = checkSchema({
     token: {
         isString: {
             errorMessage: 'token must be a string'
@@ -28,26 +28,4 @@ const TokenValidation: ValidationChain[] = checkSchema({
     }
 });
 
-export default TokenValidation;
-
-/*import { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
-
-interface IPayload {
-    _id: string,
-    iat: number,
-    exp: number,
-}
-
-export const TokenValidation = async (req: NextApiRequest, res: NextApiResponse) => {
-    try {
-        const token = (res.getHeader('token') as string);
-        if (!token) return res.status(401).json({ status: 401, error: 'Access denied' });
-        const payload = await jwt.verify(token, 'token') as IPayload;
-        req.body.user_id = payload._id;
-        
-    }
-    catch (error) {
-        res.status(400).send({ status: 400, error: error });
-    }
-}*/
+export default validateAuth;

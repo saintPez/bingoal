@@ -1,10 +1,9 @@
-import User from 'models/User';
 import { checkSchema, ValidationChain } from 'express-validator';
 
 const SignInValidation: ValidationChain[] = checkSchema({
     email: {
         isEmail: {
-            errorMessage: 'Invalid email'
+            errorMessage: 'email must be a valid email'
         }
     },
     password: {
