@@ -41,7 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     { _id: newUser._id },
                     process.env.TOKEN_SECRET,
                     {
-                        expiresIn: 60 * 60 * 24,
+                        // expiresIn: 60 * 60 * 24,
                     }
                 );
                 res.status(201).json(
