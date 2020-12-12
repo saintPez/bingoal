@@ -3,9 +3,9 @@ import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
 import { initMiddleware, validate } from 'utils/middleware';
-import TokenValidation from 'validation/token.validation';
+import tokenValidation from 'validation/token.validation';
 
-const validateAuth = initMiddleware(validate(TokenValidation));
+const validateAuth = initMiddleware(validate(tokenValidation));
 const middlewareCors = initMiddleware(cors());
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,30 +15,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             case 'GET': {
                 await dbConnect();
                 await validateAuth(req, res);
-                try {
-                    const user: IUser = await User.findOne({
-                        _id: req.query.id
-                    });
-                    res.status(200).json(
-                        JSON.stringify(
-                            {
-                                success: true,
-                                data: user
-                            },
-                            null,
-                            4
-                        )
-                    );
-                } catch (error) {
-                    throw [
+
+                const user: IUser = await User.findById(req.query.id);
+                if (!user)
+                    throw {
+                        value: req.body._id,
+                        msg: 'user not found',
+                        param: '_id',
+                        location: 'body'
+                    };
+
+                res.status(200).json(
+                    JSON.stringify(
                         {
-                            value: req.query.id,
-                            msg: 'user not found',
-                            param: 'id',
-                            location: 'query'
-                        }
-                    ];
-                }
+                            success: true,
+                            data: user
+                        },
+                        null,
+                        4
+                    )
+                );
                 break;
             }
             default:

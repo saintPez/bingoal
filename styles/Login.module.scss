@@ -1,5 +1,4 @@
 .title {
-    line-height: 1.15;
     font-size: 4rem;
     a {
         color: #0070f3;
@@ -14,11 +13,12 @@
 
 .title,
 .description {
+    margin: 0;
     text-align: center;
 }
 
 .description {
-    line-height: 1.5;
+    margin: .5rem 0 2rem 0;
     font-size: 1.5rem;
     a {
         color: #0070f3;
@@ -31,42 +31,48 @@
     }
 }
 
-.card {
+.form {
     margin: 3rem;
     padding: 2rem;
     text-decoration: none;
     border: 1px solid #eaeaea;
     border-radius: 10px;
     transition: color 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 0 40px -10px #666666;
+
+    label {
+        font-size: 1.25rem;
+        color: #666666;
+    }
 
     input {
+        border: 1px solid #dad8d8;
+        color: #666666;
+        border-radius: 5px;
+        outline: none;
         font-size: 1.25rem;
         display: block;
-        border: 0;
         width: 100%;
-        padding: 10px 0;
-        outline: none;
-        background: transparent;
-        border-bottom: 1px solid #666666;
+        padding: 5px;
         text-decoration: none;
-        margin: 2rem 0;
+        margin: .5rem 0 2rem 0;
+        transition: border-color 0.15s ease;
         &:focus {
-            border-bottom: 1px solid #0070f3;
+            border: 1px solid #666666;
         }
     }
 
-    p {
-        margin: 0 0 1rem 0;
-    }
-
-    .button {
+    button {
+        font-size: 1.25rem;
+        width: 100%;
+        padding: .25rem 0;
         border: 0;
         border-radius: 5px;
         background-color: #0070f3;
         text-decoration: none;
         outline: none;
         color: #fff;
-        margin: 1.5rem 0 .5rem;
+        margin: 1rem 0 .5rem;
         cursor: pointer;
     }
 }

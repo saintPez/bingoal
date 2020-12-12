@@ -1,5 +1,5 @@
 import { useContext, useState, FormEvent } from 'react';
-import Link from 'next/link';
+import Router from 'next/router';
 import userContext from 'context/userContext';
 import login from 'services/login';
 import styles from 'styles/Login.module.scss';
@@ -15,28 +15,30 @@ export default function Login() {
         const res = await login(email, password);
         if (!res.success) return setValue('error');
         setJWT(res.token);
-        setValue(res.token);
+        Router.push('/')
     };
 
     return (
         <main>
             <h1 className={styles.title}>Bingo</h1>
 
-            <form onSubmit={handleSubmit} className={styles.card}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <p className={styles.description}>Login to Bingo</p>
+                <label htmlFor="email">Email</label>
                 <input
+                    id="email"
                     type="text"
-                    placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                 />
+                <label htmlFor="password">Password</label>
                 <input
+                    id="password"
                     type="password"
-                    placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                 />
-                <input type="submit" value="Send" className={styles.button} />
+                <button type="submit">Send</button>
             </form>
         </main>
     );

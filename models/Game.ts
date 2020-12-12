@@ -1,7 +1,7 @@
 import { Schema, model, models, Document } from 'mongoose';
 
 export interface IGame extends Document {
-    _id: Schema.Types.ObjectId;
+    _id: Schema.Types.ObjectId | any;
     played: boolean;
     cartons: Schema.Types.ObjectId[];
     winningCartons: Schema.Types.ObjectId[];

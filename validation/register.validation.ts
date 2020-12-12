@@ -1,7 +1,7 @@
 import User from 'models/User';
 import { checkSchema, ValidationChain } from 'express-validator';
 
-const SignUpValidation: ValidationChain[] = checkSchema({
+const registerValidation: ValidationChain[] = checkSchema({
     nickname: {
         isString: {
             errorMessage: 'nickname must be a string'
@@ -64,4 +64,4 @@ const SignUpValidation: ValidationChain[] = checkSchema({
     }
 });
 
-export default SignUpValidation;
+export default registerValidation;

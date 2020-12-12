@@ -7,7 +7,7 @@ interface IPayload {
     exp: number;
 }
 
-const validateAuth: ValidationChain[] = checkSchema({
+const tokenValidation: ValidationChain[] = checkSchema({
     token: {
         isString: {
             errorMessage: 'token must be a string'
@@ -28,4 +28,4 @@ const validateAuth: ValidationChain[] = checkSchema({
     }
 });
 
-export default validateAuth;
+export default tokenValidation;
