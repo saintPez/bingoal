@@ -2,13 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
-import Game, { IGame } from 'models/Game';
+import Carton, { ICarton } from 'models/Carton';
 import { initMiddleware, validate } from 'utils/middleware';
 import tokenValidation from 'validation/token.validation';
-import gameValidation from 'validation/create/game.validation';
 
 const validateAuth = initMiddleware(validate(tokenValidation));
-const validateReq = initMiddleware(validate(gameValidation));
 const middlewareCors = initMiddleware(cors());
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,7 +16,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             case 'POST': {
                 await dbConnect();
                 await validateAuth(req, res);
-                await validateReq(req, res);
                 const user: IUser = await User.findById(req.body._id);
                 if (!user)
                     throw {
@@ -28,39 +25,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'body'
                     };
 
-                if (!user.admin)
-                    throw {
-                        value: user.admin,
-                        msg: 'user is not admin',
-                        param: 'admin',
-                        location: 'database'
-                    };
-
-                if (req.body.gameDate === undefined) {
-                    const date = new Date()
-                    date.setDate(date.getDate()+7)
-                    date.setHours(14);
-                    date.setMinutes(0);
-                    date.setSeconds(0);
-                    date.setMilliseconds(0);
-                    req.body.gameDate = date;
-                }
-
-                const game: IGame = new Game({
-                    played: false,
-                    cartoons: [],
-                    balls: [],
-                    winningCartons: [],
-                    gameDate: req.body.gameDate
-                });
-
-                const newGame = await game.save();
+                const carton: ICarton = await Carton.findOne();
                 
+                await user.update({
+                    $push: {
+                        tempPurchasedCartons: carton._id
+                    }
+                })
+                  
+
                 res.status(200).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: newGame
+                            data: ''
                         },
                         null,
                         4

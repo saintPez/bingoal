@@ -37,7 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                if (req.body.data === undefined || req.body.data === null || req.body.data === []) {
+                if (req.body.data === undefined) {
                     const data = await createCarton();
                     req.body.data = data;
                 }

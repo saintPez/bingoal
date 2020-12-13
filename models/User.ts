@@ -14,6 +14,7 @@ export interface IUser extends Document {
     image: string;
     wonGames: Schema.Types.ObjectId;
     purchasedGames: Schema.Types.ObjectId;
+    tempPurchasedCartons: Schema.Types.ObjectId[] | any[];
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
     createdAt: Date;
@@ -68,14 +69,21 @@ const userSchema = new Schema({
     wonGames: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Game',
+            ref: 'Games',
             default: []
         }
     ],
     purchasedGames: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Game',
+            ref: 'Games',
+            default: []
+        }
+    ],
+    tempPurchasedCartons: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Cartons',
             default: []
         }
     ]
