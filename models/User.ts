@@ -13,8 +13,7 @@ export interface IUser extends Document {
     admin: boolean;
     image: string;
     wonGames: Schema.Types.ObjectId;
-    purchasedGames: Schema.Types.ObjectId;
-    tempPurchasedCartons: Schema.Types.ObjectId[] | any[];
+    purchasedGames: Schema.Types.ObjectId | any;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
     createdAt: Date;
@@ -69,21 +68,14 @@ const userSchema = new Schema({
     wonGames: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Games',
+            ref: 'Game',
             default: []
         }
     ],
     purchasedGames: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Games',
-            default: []
-        }
-    ],
-    tempPurchasedCartons: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Cartons',
+            ref: 'Game',
             default: []
         }
     ]

@@ -3,10 +3,10 @@ import { Schema, model, models, Document } from 'mongoose';
 export interface IGame extends Document {
     _id: Schema.Types.ObjectId | any;
     played: boolean;
-    cartons: Schema.Types.ObjectId[] | any[];
-    users: Schema.Types.ObjectId[] | any[];
+    playing: boolean;
+    purchasedCards: Schema.Types.ObjectId[] | any[];
     balls: number[];
-    winningCartons: Schema.Types.ObjectId[] | any[];
+    winningCards: Schema.Types.ObjectId[] | any[];
     gameDate: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -21,17 +21,10 @@ const gameSchema = new Schema({
         type: Boolean,
         default: false
     },
-    cartons: [
+    purchasedCards: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Cartons',
-            default: []
-        }
-    ],
-    users: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Users',
+            ref: 'purchasedCard',
             default: []
         }
     ],
@@ -41,10 +34,10 @@ const gameSchema = new Schema({
             default: []
         }
     ],
-    winningCartons: [
+    winningCards: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Cartons',
+            ref: 'Card',
             default: []
         }
     ],

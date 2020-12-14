@@ -2,14 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
-import Carton, { ICarton } from 'models/Carton';
+import Card, { ICard } from 'models/Card';
 import { initMiddleware, validate } from 'utils/middleware';
 import tokenValidation from 'validation/token.validation';
-import cartonValidation from 'validation/create/carton.validation';
-import createCarton from 'libs/create/carton';
+import cardValidation from 'validation/create/card.validation';
+import createCard from 'libs/create/card';
 
 const validateAuth = initMiddleware(validate(tokenValidation));
-const validateReq = initMiddleware(validate(cartonValidation));
+const validateReq = initMiddleware(validate(cardValidation));
 const middlewareCors = initMiddleware(cors());
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -38,21 +38,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     };
 
                 if (req.body.data === undefined) {
-                    const data = await createCarton();
+                    const data = await createCard();
                     req.body.data = data;
                 }
 
-                const carton: ICarton = new Carton({
+                const card: ICard = new Card({
                     data: req.body.data
                 });
 
-                const newCarton = await carton.save();
+                const newCard = await card.save();
 
                 res.status(200).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: newCarton
+                            data: newCard
                         },
                         null,
                         4

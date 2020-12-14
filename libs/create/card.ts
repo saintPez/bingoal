@@ -1,5 +1,4 @@
-import { AnySrvRecord } from 'dns';
-import Carton, { ICarton } from 'models/Carton';
+import Card, { ICard } from 'models/Card';
 
 const createCarton = async () => {
     let result: Array<number> = [];
@@ -25,7 +24,7 @@ const createCarton = async () => {
     for (let i = 0; i < 5; i++) {
         result.push(...O.splice(Math.floor(Math.random() * (O.length - 0)) + 0, 1));
     }
-    const carton: ICarton = await Carton.findOne({
+    const carton: ICard = await Card.findOne({
         data: result
     });
     if (Boolean(carton)) return createCarton();
