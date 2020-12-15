@@ -24,4 +24,4 @@ const purchasedCardSchema = new Schema({
 purchasedCardSchema.set('versionKey', false);
 purchasedCardSchema.set('timestamps', true);
 
-export default models.purchasedCard || model<IPurchasedCard>('purchasedCard', purchasedCardSchema);
+export default models.PurchasedCard || model<IPurchasedCard>('PurchasedCard', purchasedCardSchema);

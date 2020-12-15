@@ -4,6 +4,7 @@ export interface IGame extends Document {
     _id: Schema.Types.ObjectId | any;
     played: boolean;
     playing: boolean;
+    cards: Schema.Types.ObjectId[] | any[];
     purchasedCards: Schema.Types.ObjectId[] | any[];
     balls: number[];
     winningCards: Schema.Types.ObjectId[] | any[];
@@ -21,10 +22,17 @@ const gameSchema = new Schema({
         type: Boolean,
         default: false
     },
+    cards: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Card',
+            default: []
+        }
+    ],
     purchasedCards: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'purchasedCard',
+            ref: 'PurchasedCard',
             default: []
         }
     ],

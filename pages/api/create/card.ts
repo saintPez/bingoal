@@ -3,6 +3,7 @@ import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
 import Card, { ICard } from 'models/Card';
+import Game, { IGame } from 'models/Game';
 import { initMiddleware, validate } from 'utils/middleware';
 import tokenValidation from 'validation/token.validation';
 import cardValidation from 'validation/create/card.validation';
@@ -20,6 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 await dbConnect();
                 await validateAuth(req, res);
                 await validateReq(req, res);
+
                 const user: IUser = await User.findById(req.body._id);
                 if (!user)
                     throw {
@@ -37,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                if (req.body.data === undefined) {
+                if (req.body.data === undefined || req.body.data === []) {
                     const data = await createCard();
                     req.body.data = data;
                 }
@@ -47,6 +49,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 });
 
                 const newCard = await card.save();
+
+                const games: IGame[] = await Game.find({});
+                if (games !== []) {
+                    for (const game of games) {
+                        game.updateOne({
+                            $push: {
+                                cards: newCard._id,
+                            }
+                        })
+                    }
+                }
 
                 res.status(200).json(
                     JSON.stringify(

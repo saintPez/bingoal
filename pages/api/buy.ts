@@ -2,12 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
 import User, { IUser } from 'models/User';
-import Card, { ICard } from 'models/Card';
 import Game, { IGame } from 'models/Game';
 import PurchasedCard, { IPurchasedCard } from 'models/purchasedCard';
 import { initMiddleware, validate } from 'utils/middleware';
+import buyValidation from 'validation/buy.validation';
 import tokenValidation from 'validation/token.validation';
 
+const validateReq = initMiddleware(validate(buyValidation));
 const validateAuth = initMiddleware(validate(tokenValidation));
 const middlewareCors = initMiddleware(cors());
 
@@ -18,6 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             case 'POST': {
                 await dbConnect();
                 await validateAuth(req, res);
+                await validateReq(req, res);
+
                 const user: IUser = await User.findById(req.body._id);
                 if (!user)
                     throw {
@@ -27,26 +30,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'body'
                     };
 
-                const card: ICard = await Card.findOne({purchased: false});
-                if (!card)
-                    throw {
-                        value: card,
-                        msg: 'card not found',
-                        param: 'card',
-                        location: 'database'
-                    };
-                const game: IGame = await Game.findOne();
+                const game: IGame = await Game.findOne(
+                    req.body.game ? { _id: req.body.game } : {}
+                ).populate('cards');
                 if (!game)
                     throw {
                         value: game,
                         msg: 'game not found',
-                        param: 'game',
+                        param: '_id',
                         location: 'database'
                     };
 
-                await card.updateOne({
-                    purchased: true
+                const card = game.cards.find((element) => element);
+                if (!card)
+                    throw {
+                        value: card,
+                        msg: 'card not found',
+                        param: '_id',
+                        location: 'database'
+                    };
+
+                await user.updateOne({
+                    $push: {
+                        purchasedGames: game._id
+                    }
                 });
+
                 const purchasedCard: IPurchasedCard = new PurchasedCard({
                     user: req.body._id,
                     card: card._id
@@ -57,6 +66,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 await game.updateOne({
                     $push: {
                         purchasedCards: newPurchasedCard._id
+                    },
+                    $pull: {
+                        cards: card._id
                     }
                 });
 
@@ -65,33 +77,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         {
                             success: true,
                             data: newPurchasedCard
-                        },
-                        null,
-                        4
-                    )
-                );
-                break;
-            }
-            case 'GET': {
-                await dbConnect();
-                await validateAuth(req, res);
-
-                const purchasedCard = await PurchasedCard.findOne()
-                    .populate('user')
-                    .populate('card');
-                if (!purchasedCard)
-                    throw {
-                        value: purchasedCard,
-                        msg: 'purchasedCard not found',
-                        param: 'purchasedCard',
-                        location: 'database'
-                    };
-
-                res.status(200).json(
-                    JSON.stringify(
-                        {
-                            success: true,
-                            data: purchasedCard
                         },
                         null,
                         4

@@ -12,8 +12,8 @@ export interface IUser extends Document {
     dateOfBirth: Date;
     admin: boolean;
     image: string;
-    wonGames: Schema.Types.ObjectId;
-    purchasedGames: Schema.Types.ObjectId | any;
+    wonGames: Schema.Types.ObjectId[] | any[];
+    purchasedGames: Schema.Types.ObjectId[] | any[];
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
     createdAt: Date;

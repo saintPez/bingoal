@@ -5,18 +5,18 @@ import User, { IUser } from 'models/User';
 import Card, { ICard } from 'models/Card';
 import Game, { IGame } from 'models/Game';
 import { initMiddleware, validate } from 'utils/middleware';
+import cardsValidation from 'validation/cards.validation';
 import tokenValidation from 'validation/token.validation';
-import gameValidation from 'validation/create/game.validation';
 
+const validateReq = initMiddleware(validate(cardsValidation));
 const validateAuth = initMiddleware(validate(tokenValidation));
-const validateReq = initMiddleware(validate(gameValidation));
 const middlewareCors = initMiddleware(cors());
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         await middlewareCors(req, res);
         switch (req.method) {
-            case 'POST': {
+            case 'GET': {
                 await dbConnect();
                 await validateAuth(req, res);
                 await validateReq(req, res);
@@ -30,43 +30,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'body'
                     };
 
-                if (!user.admin)
-                    throw {
-                        value: user.admin,
-                        msg: 'user is not admin',
-                        param: 'admin',
-                        location: 'database'
-                    };
+                const game: IGame = await Game.findOne(
+                    req.body.game ? { _id: req.body.game } : {}
+                ).populate('cards');
+                if (!game) {
+                    const cards: ICard[] = await Card.find({});
+                    if (!cards)
+                        throw {
+                            value: cards,
+                            msg: 'card not found',
+                            param: '_id',
+                            location: 'database'
+                        };
 
-                if (req.body.gameDate === undefined) {
-                    const date = new Date();
-                    date.setDate(date.getDate() + 7);
-                    date.setHours(14);
-                    date.setMinutes(0);
-                    date.setSeconds(0);
-                    date.setMilliseconds(0);
-                    req.body.gameDate = date;
+                    return res.status(200).json(
+                        JSON.stringify(
+                            {
+                                success: true,
+                                data: cards
+                            },
+                            null,
+                            4
+                        )
+                    );
                 }
-
-                const cards: ICard[] = await Card.find({});
-
-                const game: IGame = new Game({
-                    played: false,
-                    playing: false,
-                    cards: cards,
-                    purchasedCards: [],
-                    balls: [],
-                    winningCartons: [],
-                    gameDate: req.body.gameDate
-                });
-
-                const newGame = await game.save();
 
                 res.status(200).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: newGame
+                            data: game.cards
                         },
                         null,
                         4
