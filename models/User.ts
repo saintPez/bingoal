@@ -13,8 +13,8 @@ export interface IUser extends Document {
     dateOfBirth: Date;
     admin: boolean;
     image: string;
-    wonGames: Schema.Types.ObjectId[] & IGame[];
-    purchasedGames: Schema.Types.ObjectId[] & IGame[];
+    wonGames: IGame[] & Schema.Types.ObjectId[];
+    purchasedGames: IGame[] & Schema.Types.ObjectId[];
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
     createdAt: Date;

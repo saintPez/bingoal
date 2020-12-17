@@ -39,13 +39,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     };
 
                 if (req.body.gameDate === undefined) {
-                    const date = new Date();
-                    date.setDate(date.getDate() + 7);
-                    date.setHours(14);
-                    date.setMinutes(0);
-                    date.setSeconds(0);
-                    date.setMilliseconds(0);
-                    req.body.gameDate = date;
+                    // const date = new Date();
+                    // date.setDate(date.getDate() + 7);
+                    // date.setHours(14);
+                    // date.setMinutes(0);
+                    // date.setSeconds(0);
+                    // date.setMilliseconds(0);
+                    // req.body.gameDate = date;
+                    req.body.gameDate = new Date();
                 }
 
                 const cards: ICard[] = await Card.find({});

@@ -58,7 +58,34 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const purchasedCard: IPurchasedCard = new PurchasedCard({
                     user: req.body._id,
-                    card: card._id
+                    card: card._id,
+                    score: [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ]
                 });
 
                 const newPurchasedCard = await purchasedCard.save();

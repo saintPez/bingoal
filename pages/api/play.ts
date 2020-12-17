@@ -56,7 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                if (!game.played)
+                if (game.played)
                     throw {
                         value: game.played,
                         msg: 'game has already been played',
@@ -72,7 +72,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                game.updateOne({ playing: true });
+                game.playing = true;
+                await game.save()
 
                 res.status(200).json(
                     JSON.stringify(

@@ -6,11 +6,11 @@ export interface IGame extends Document {
     _id: Schema.Types.ObjectId | any;
     played: boolean;
     playing: boolean;
-    cards: Schema.Types.ObjectId[] & ICard[];
-    purchasedCards: Schema.Types.ObjectId & IPurchasedCard[];
+    cards: ICard[] & Schema.Types.ObjectId[] ;
+    purchasedCards: IPurchasedCard[] & Schema.Types.ObjectId;
     balls: number[];
     remainingBalls: number[];
-    winningCards: Schema.Types.ObjectId[] & ICard[];
+    winningCards: ICard[] & Schema.Types.ObjectId[];
     gameDate: Date;
     createdAt: Date;
     updatedAt: Date;

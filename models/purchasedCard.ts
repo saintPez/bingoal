@@ -51,7 +51,8 @@ const purchasedCardSchema = new Schema({
                 false,
                 false,
                 false
-            ]
+            ],
+            required: false
         }
     ]
 });

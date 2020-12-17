@@ -39,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                const game: IGame = await Game.findOne(
+                let game: IGame = await Game.findOne(
                     req.body.game ? { _id: req.body.game } : {}
                 )
                     .populate({
@@ -63,7 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                if (!game.played)
+                if (game.played)
                     throw {
                         value: game.played,
                         msg: 'game has already been played',
@@ -79,15 +79,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                if (game.remainingBalls == [])
-                    game.updateOne({ remainingBalls: await createBalls() });
+                if (!game.remainingBalls.length) {
+                    console.log(game.remainingBalls);
+                    await game.updateOne({ remainingBalls: createBalls() });
+                }
+
+                game = await Game.findOne(
+                    req.body.game ? { _id: req.body.game } : {}
+                )
+                    .populate({
+                        path: 'purchasedCards',
+                        populate: {
+                            path: 'user'
+                        }
+                    })
+                    .populate({
+                        path: 'purchasedCards',
+                        populate: {
+                            path: 'card'
+                        }
+                    });
 
                 const index: number =
                     Math.floor(
                         Math.random() * (game.remainingBalls.length - 0)
                     ) + 0;
 
-                game.updateOne({
+                await game.updateOne({
                     $push: {
                         balls: game.remainingBalls[index]
                     },
@@ -96,10 +114,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     }
                 });
 
+                game = await Game.findOne(
+                    req.body.game ? { _id: req.body.game } : {}
+                )
+                    .populate({
+                        path: 'purchasedCards',
+                        populate: {
+                            path: 'user'
+                        }
+                    })
+                    .populate({
+                        path: 'purchasedCards',
+                        populate: {
+                            path: 'card'
+                        }
+                    });
+
                 const purchasedCards: IPurchasedCard[] = game.purchasedCards.filter(
                     (element) =>
                         element.card.data.find(
-                            (e) => e == game.remainingBalls[index]
+                            (e) => e == game.balls[index]
                         )
                 );
 
@@ -115,26 +149,48 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         )
                     );
 
-                const cards: IPurchasedCard[] = PurchasedCard.find({
+                const cards: IPurchasedCard[] = await PurchasedCard.find({
                     _id: purchasedCards.map((element) => element._id)
-                });
+                })
+                    .populate('card')
+                    .populate('user');
 
                 card: for (const card of cards) {
-                    const index = card.card.data.findIndex(
-                        (element) => element == game.remainingBalls[index]
+                    const ind = card.card.data.findIndex(
+                        (element) => element == game.balls[index]
                     );
-                    card.score[index] = true;
+                    card.score[ind] = true;
+                    await PurchasedCard.findOneAndUpdate(
+                        { _id: card._id },
+                        { score: card.score }
+                    );
                     let count = 0;
                     for (const bool of card.score) {
                         if (count == 2) {
-                            card.save();
                             continue card;
                         }
                         if (!bool) count++;
                     }
-                    game.updateOne({ $push: { winningCards: card._id } });
-                    card.save();
+                    await game.updateOne({ $push: { winningCards: card._id } });
+                    await card.save();
+                    await card.user.updateOne({ wonGames: game._id });
                 }
+
+                game = await Game.findOne(
+                    req.body.game ? { _id: req.body.game } : {}
+                )
+                    .populate({
+                        path: 'purchasedCards',
+                        populate: {
+                            path: 'user'
+                        }
+                    })
+                    .populate({
+                        path: 'purchasedCards',
+                        populate: {
+                            path: 'card'
+                        }
+                    });
 
                 res.status(200).json(
                     JSON.stringify(
@@ -152,6 +208,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 throw [{ value: req.method, msg: `method is invalid` }];
         }
     } catch (error) {
+        console.log(error);
         res.status(400).json(
             JSON.stringify(
                 {
