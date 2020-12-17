@@ -1,23 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
-import User, { IUser } from 'models/User';
-import Card, { ICard } from 'models/Card';
 import Game, { IGame } from 'models/Game';
+import User, { IUser } from 'models/User';
 import { initMiddleware, validate } from 'utils/middleware';
+import playValidation from 'validation/play.validation';
 import tokenValidation from 'validation/token.validation';
-import cardValidation from 'validation/create/card.validation';
-import createCard from 'libs/create/card';
 
+const validateReq = initMiddleware(validate(playValidation));
 const validateAuth = initMiddleware(validate(tokenValidation));
-const validateReq = initMiddleware(validate(cardValidation));
 const middlewareCors = initMiddleware(cors());
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         await middlewareCors(req, res);
         switch (req.method) {
-            case 'POST': {
+            case 'GET': {
                 await dbConnect();
                 await validateAuth(req, res);
                 await validateReq(req, res);
@@ -39,44 +37,48 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         location: 'database'
                     };
 
-                if (req.body.data === undefined || req.body.data === []) {
-                    const data = await createCard();
-                    req.body.data = data;
-                } else {
-                    const card: ICard = await Card.findOne({
-                        data: { $all: req.body.data }
-                    });
-                    if (Boolean(card))
-                        throw {
-                            value: req.body.data,
-                            msg: 'data already exists',
-                            param: 'data',
-                            location: 'database'
-                        };
-                }
+                const game: IGame = await Game.findOne(
+                    req.body.game ? { _id: req.body.game } : {}
+                );
+                if (!game)
+                    throw {
+                        value: req.body.game,
+                        msg: 'game not found',
+                        param: '_id',
+                        location: 'database'
+                    };
 
-                const card: ICard = new Card({
-                    data: req.body.data
-                });
+                if (game.gameDate > new Date())
+                    throw {
+                        value: game.gameDate,
+                        msg: 'game has not started yet',
+                        param: 'gameDate',
+                        location: 'database'
+                    };
 
-                const newCard = await card.save();
+                if (!game.played)
+                    throw {
+                        value: game.played,
+                        msg: 'game has already been played',
+                        param: 'played',
+                        location: 'database'
+                    };
 
-                const games: IGame[] = await Game.find({});
-                if (games !== []) {
-                    for (const game of games) {
-                        game.updateOne({
-                            $push: {
-                                cards: newCard._id
-                            }
-                        });
-                    }
-                }
+                if (game.playing)
+                    throw {
+                        value: game.playing,
+                        msg: 'game is playing',
+                        param: 'playing',
+                        location: 'database'
+                    };
 
-                res.status(201).json(
+                game.updateOne({ playing: true });
+
+                res.status(200).json(
                     JSON.stringify(
                         {
                             success: true,
-                            data: newCard
+                            data: game
                         },
                         null,
                         4

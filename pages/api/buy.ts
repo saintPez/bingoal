@@ -72,7 +72,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     }
                 });
 
-                res.status(200).json(
+                res.status(201).json(
                     JSON.stringify(
                         {
                             success: true,

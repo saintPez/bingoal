@@ -3,7 +3,7 @@ import cors from 'cors';
 import dbConnect from 'utils/dbConnect';
 import Game, { IGame } from 'models/Game';
 import User, { IUser } from 'models/User';
-import Card, { ICard } from 'models/Card';
+import { ICard } from 'models/Card';
 import PurchasedCard, { IPurchasedCard } from 'models/purchasedCard';
 import { initMiddleware, validate } from 'utils/middleware';
 import buyValidation from 'validation/buy.validation';
@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     };
 
                 const card: ICard = game.cards.find(
-                    (element) => element._id === req.query.id
+                    (element) => element._id == req.query.id
                 );
                 if (!card)
                     throw {
@@ -74,7 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     }
                 });
 
-                res.status(200).json(
+                res.status(201).json(
                     JSON.stringify(
                         {
                             success: true,

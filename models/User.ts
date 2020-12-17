@@ -1,4 +1,5 @@
 import { Schema, model, models, Document } from 'mongoose';
+import { IGame } from 'models/Game';
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
@@ -12,8 +13,8 @@ export interface IUser extends Document {
     dateOfBirth: Date;
     admin: boolean;
     image: string;
-    wonGames: Schema.Types.ObjectId[] | any[];
-    purchasedGames: Schema.Types.ObjectId[] | any[];
+    wonGames: Schema.Types.ObjectId[] & IGame[];
+    purchasedGames: Schema.Types.ObjectId[] & IGame[];
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
     createdAt: Date;

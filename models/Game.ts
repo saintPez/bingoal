@@ -1,13 +1,16 @@
 import { Schema, model, models, Document } from 'mongoose';
+import { IPurchasedCard } from 'models/purchasedCard';
+import { ICard } from 'models/Card';
 
 export interface IGame extends Document {
     _id: Schema.Types.ObjectId | any;
     played: boolean;
     playing: boolean;
-    cards: Schema.Types.ObjectId[] | any[];
-    purchasedCards: Schema.Types.ObjectId[] | any[];
+    cards: Schema.Types.ObjectId[] & ICard[];
+    purchasedCards: Schema.Types.ObjectId & IPurchasedCard[];
     balls: number[];
-    winningCards: Schema.Types.ObjectId[] | any[];
+    remainingBalls: number[];
+    winningCards: Schema.Types.ObjectId[] & ICard[];
     gameDate: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -37,6 +40,12 @@ const gameSchema = new Schema({
         }
     ],
     balls: [
+        {
+            type: Number,
+            default: []
+        }
+    ],
+    remainingBalls: [
         {
             type: Number,
             default: []
