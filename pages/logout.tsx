@@ -1,16 +1,16 @@
-import { useContext, useEffect } from 'react';
-import userContext from 'context/userContext';
+import { useContext, useEffect } from 'react'
+import userContext from 'context/userContext'
 
-export default function Logout() {
-    const { jwt, setJWT } = useContext(userContext);
+export default function Logout () {
+  const { setJWT } = useContext(userContext)
 
-    useEffect(function () {
-        setJWT(false);
-    });
+  useEffect(function () {
+    setJWT(false)
+  })
 
-    return (
+  return (
         <>
             <h1>Logout</h1>
         </>
-    );
+  )
 }

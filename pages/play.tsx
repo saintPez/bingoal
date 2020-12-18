@@ -1,7 +1,7 @@
-import Head from 'next/head';
+import Head from 'next/head'
 
-export default function Play() {
-    return (
+export default function Play () {
+  return (
         <>
             <Head>
                 <title>PLAY - Bingo</title>
@@ -10,5 +10,5 @@ export default function Play() {
                 <h1>Play</h1>
             </main>
         </>
-    );
+  )
 }

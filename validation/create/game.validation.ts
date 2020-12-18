@@ -1,12 +1,12 @@
-import { checkSchema, ValidationChain } from 'express-validator';
+import { checkSchema, ValidationChain } from 'express-validator'
 
 const gameValidation: ValidationChain[] = checkSchema({
-    gameDate: {
-        optional: true,
-        isDate: {
-            errorMessage: 'gameDate should be a date'
-        }
+  gameDate: {
+    optional: true,
+    isDate: {
+      errorMessage: 'gameDate should be a date'
     }
-});
+  }
+})
 
-export default gameValidation;
+export default gameValidation

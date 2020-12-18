@@ -1,85 +1,84 @@
 .title {
-    font-size: 4rem;
-    a {
-        color: #0070f3;
-        text-decoration: none;
-    }
-    a:hover,
-    a:focus,
-    a:active {
-        text-decoration: underline;
-    }
+  font-size: 4rem;
+  a {
+    color: #0070f3;
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus,
+  a:active {
+    text-decoration: underline;
+  }
 }
 
 .title,
 .description {
-    margin: 0;
-    text-align: center;
+  margin: 0;
+  text-align: center;
 }
 
 .description {
-    margin: .5rem 0 2rem 0;
-    font-size: 1.5rem;
-    a {
-        color: #0070f3;
-        text-decoration: none;
-    }
-    a:hover,
-    a:focus,
-    a:active {
-        text-decoration: underline;
-    }
+  margin: 0.5rem 0 2rem 0;
+  font-size: 1.5rem;
+  a {
+    color: #0070f3;
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus,
+  a:active {
+    text-decoration: underline;
+  }
 }
 
 .form {
-    margin: 3rem;
-    padding: 2rem;
+  margin: 3rem;
+  padding: 2rem;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 0 40px -10px #666666;
+
+  label {
+    font-size: 1.25rem;
+    color: #666666;
+  }
+
+  input {
+    border: 1px solid #dad8d8;
+    color: #666666;
+    border-radius: 5px;
+    outline: none;
+    font-size: 1.25rem;
+    display: block;
+    width: 100%;
+    padding: 5px;
     text-decoration: none;
-    border: 1px solid #eaeaea;
-    border-radius: 10px;
-    transition: color 0.15s ease, border-color 0.15s ease;
-    box-shadow: 0 0 40px -10px #666666;
-
-    label {
-        font-size: 1.25rem;
-        color: #666666;
+    margin: 0.5rem 0 2rem 0;
+    transition: border-color 0.15s ease;
+    &:focus {
+      border: 1px solid #666666;
     }
+  }
 
-    input {
-        border: 1px solid #dad8d8;
-        color: #666666;
-        border-radius: 5px;
-        outline: none;
-        font-size: 1.25rem;
-        display: block;
-        width: 100%;
-        padding: 5px;
-        text-decoration: none;
-        margin: .5rem 0 2rem 0;
-        transition: border-color 0.15s ease;
-        &:focus {
-            border: 1px solid #666666;
-        }
-    }
-
-    button {
-        font-size: 1.25rem;
-        width: 100%;
-        padding: .25rem 0;
-        border: 0;
-        border-radius: 5px;
-        background-color: #0070f3;
-        text-decoration: none;
-        outline: none;
-        color: #fff;
-        margin: 1rem 0 .5rem;
-        cursor: pointer;
-    }
+  button {
+    font-size: 1.25rem;
+    width: 100%;
+    padding: 0.25rem 0;
+    border: 0;
+    border-radius: 5px;
+    background-color: #0070f3;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    margin: 1rem 0 0.5rem;
+    cursor: pointer;
+  }
 }
 
 .card:hover,
 .card:focus,
 .card:active {
-    
-    border-color: #0070f3;
+  border-color: #0070f3;
 }

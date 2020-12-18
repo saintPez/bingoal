@@ -1,24 +1,25 @@
-import { useContext, useState, FormEvent } from 'react';
-import Router from 'next/router';
-import userContext from 'context/userContext';
-import login from 'services/login';
-import styles from 'styles/Login.module.scss';
+import { useContext, useState, FormEvent } from 'react'
+import Router from 'next/router'
+import userContext from 'context/userContext'
+import login from 'services/login'
+import styles from 'styles/Login.module.scss'
 
-export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [value, setValue] = useState('');
-    const { jwt, setJWT } = useContext(userContext);
+export default function Login () {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  // eslint-disable-next-line no-unused-vars
+  const [value, setValue] = useState('')
+  const { setJWT } = useContext(userContext)
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        const res = await login(email, password);
-        if (!res.success) return setValue('error');
-        setJWT(res.token);
-        Router.push('/')
-    };
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    const res = await login(email, password)
+    if (!res.success) return setValue('error')
+    setJWT(res.token)
+    Router.push('/')
+  }
 
-    return (
+  return (
         <main>
             <h1 className={styles.title}>Bingo</h1>
 
@@ -41,5 +42,5 @@ export default function Login() {
                 <button type="submit">Send</button>
             </form>
         </main>
-    );
+  )
 }
