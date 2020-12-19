@@ -1,5 +1,4 @@
 import { Schema, model, models, Document } from 'mongoose'
-
 export interface ICard extends Document {
   _id: Schema.Types.ObjectId | any;
   data: number[] | Array<null>;
