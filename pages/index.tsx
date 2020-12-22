@@ -6,7 +6,7 @@ export default function Home () {
   return (
     <>
       <Head>
-        <title>HOME- BinGoal</title>
+        <title>HOME - BinGoal</title>
       </Head>
       <Button color="primary">
         s
