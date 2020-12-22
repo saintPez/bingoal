@@ -8,10 +8,10 @@ export default function App ({ Component, pageProps }) {
   return (
     <div className={styles.container}>
       <UserContextProvider>
-      <Header />
-      <div className={styles.layout}>
-        <Component {...pageProps} />
-      </div>
+        <Header />
+        <div className={styles.layout}>
+          <Component {...pageProps} />
+        </div>
       </UserContextProvider>
       <Footer />
     </div>

@@ -2,10 +2,11 @@ import { useContext, useEffect } from 'react'
 import userContext from 'context/userContext'
 
 export default function Logout () {
-  const { setJWT } = useContext(userContext)
+  const { setUser, setToken } = useContext(userContext)
 
   useEffect(function () {
-    setJWT(false)
+    setUser(false)
+    setToken(false)
   })
 
   return (

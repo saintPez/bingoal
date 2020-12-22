@@ -5,6 +5,7 @@ import dbConnect from 'utils/dbConnect'
 import User, { IUser } from 'models/User'
 import { initMiddleware, validate } from 'utils/middleware'
 import loginValidation from 'validation/login.validation'
+import { ValidationError } from 'utils/errors'
 
 const validateReq = initMiddleware(validate(loginValidation))
 const middlewareCors = initMiddleware(cors())
@@ -19,12 +20,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const user: IUser = await User.findOne({
           email: req.body.email
         })
-        if (!user) throw new Error('email is not correct')
+        if (!user) {
+          throw new ValidationError({
+            value: req.body.password,
+            message: 'email is not correct',
+            param: 'email',
+            location: 'body'
+          })
+        }
 
         const correctPassword: boolean = await user.validatePassword(
           req.body.password
         )
-        if (!correctPassword) throw new Error('password is not correct')
+        if (!correctPassword) {
+          throw new ValidationError({
+            value: req.body.password,
+            message: 'password is not correct',
+            param: 'password',
+            location: 'body'
+          })
+        }
 
         const token: Secret = await jwt.sign(
           { _id: user._id },
@@ -39,8 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             {
               success: true,
               data: user,
-              token: token,
-              param: 'token'
+              token: token
             },
             null,
             4
@@ -48,14 +62,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         )
         break
       }
-      default: throw new Error('method is invalid')
+      default: throw new ValidationError({
+        value: req.method,
+        message: 'method is invalid',
+        param: 'method',
+        location: 'req'
+      })
     }
   } catch (error) {
     res.status(400).json(
       JSON.stringify(
         {
           success: false,
-          error: error
+          error: error.name === 'ValidationError'
+            ? {
+                value: error.value,
+                message: error.message,
+                param: error.param,
+                location: error.location
+              }
+            : {
+                message: error.message
+              }
         },
         null,
         4

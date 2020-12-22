@@ -36,3 +36,6 @@ yarn-error.log*
 
 # http
 *.http
+
+# eslint
+.eslintcache

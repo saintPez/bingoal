@@ -5,7 +5,7 @@ export default function Error () {
   return (
     <>
       <Head>
-        <title>404 - Bingo</title>
+        <title>404 - BinGoal</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className={styles.h1}>404</h1>

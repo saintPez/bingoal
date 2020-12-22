@@ -54,7 +54,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       JSON.stringify(
         {
           success: false,
-          error: error
+          error: {
+            message: error.message
+          }
         },
         null,
         4

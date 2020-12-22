@@ -7,7 +7,7 @@ import PurchasedCard, { IPurchasedCard } from 'models/purchasedCard'
 import { initMiddleware, validate } from 'utils/middleware'
 import tokenValidation from 'validation/token.validation'
 import ballValidation from 'validation/create/ball.validation'
-import createBalls from 'libs/create/balls'
+import createBalls from 'utils/create/balls'
 
 const validateAuth = initMiddleware(validate(tokenValidation))
 const validateReq = initMiddleware(validate(ballValidation))

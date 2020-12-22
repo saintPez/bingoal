@@ -5,7 +5,7 @@ export default function Error () {
   return (
     <>
       <Head>
-        <title>Error - Bingo</title>
+        <title>Error - BinGoal</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1 className={styles.h1}>ERROR</h1>

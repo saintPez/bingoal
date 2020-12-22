@@ -7,7 +7,7 @@ import Game, { IGame } from 'models/Game'
 import { initMiddleware, validate } from 'utils/middleware'
 import tokenValidation from 'validation/token.validation'
 import cardValidation from 'validation/create/card.validation'
-import createCard from 'libs/create/card'
+import createCard from 'utils/create/card'
 
 const validateAuth = initMiddleware(validate(tokenValidation))
 const validateReq = initMiddleware(validate(cardValidation))

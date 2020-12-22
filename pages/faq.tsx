@@ -4,7 +4,7 @@ export default function Faq () {
   return (
     <>
       <Head>
-        <title>FAQ - Bingo</title>
+        <title>FAQ - BinGoal</title>
       </Head>
     </>
   )

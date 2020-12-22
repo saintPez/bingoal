@@ -32,7 +32,7 @@
 }
 
 .form {
-  margin: 3rem;
+  margin: 3rem 0;
   padding: 2rem;
   text-decoration: none;
   border: 1px solid #eaeaea;
@@ -41,8 +41,10 @@
   box-shadow: 0 0 40px -10px #666666;
 
   label {
+    display: block;
     font-size: 1.25rem;
     color: #666666;
+    margin-top: 2rem;
   }
 
   input {
@@ -50,12 +52,13 @@
     color: #666666;
     border-radius: 5px;
     outline: none;
-    font-size: 1.25rem;
+    font-size: 1rem;
     display: block;
-    width: 100%;
+    width: 243px;
+    min-width: auto;
     padding: 5px;
     text-decoration: none;
-    margin: 0.5rem 0 2rem 0;
+    margin-top: 0.5rem;
     transition: border-color 0.15s ease;
     &:focus {
       border: 1px solid #666666;
@@ -72,7 +75,7 @@
     text-decoration: none;
     outline: none;
     color: #fff;
-    margin: 1rem 0 0.5rem;
+    margin: 3rem 0 0.5rem;
     cursor: pointer;
   }
 }
@@ -81,4 +84,10 @@
 .card:focus,
 .card:active {
   border-color: #0070f3;
+}
+
+.error {
+  position: absolute;
+  color: red;
+  font-size: 0.8rem;
 }

@@ -4,7 +4,7 @@ export default function Play () {
   return (
     <>
       <Head>
-        <title>PLAY - Bingo</title>
+        <title>PLAY - BinGoal</title>
       </Head>
       <main>
         <h1>Play</h1>
