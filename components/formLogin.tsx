@@ -5,9 +5,14 @@ import styles from 'styles/FormLogin.module.scss'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
 export default function FormLogin () {
+  const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
@@ -70,7 +75,7 @@ export default function FormLogin () {
         <TextValidator
           name='password'
           label='Password'
-          type='password'
+          type={showPassword ? 'text' : 'password'}
           onChange={(e) => setPassword(`${(e.target as HTMLInputElement).value}`)}
           value={password}
           validators={['required', 'minStringLength:8']}
@@ -78,6 +83,18 @@ export default function FormLogin () {
           error={Boolean(errorPassword)}
           helperText={` ${errorPassword}`}
           fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  {showPassword ? <Visibility color='action'/> : <VisibilityOff color='action'/>}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
         />
       </div>
       <Button type='submit' variant='contained' color='primary' fullWidth>

@@ -7,7 +7,7 @@ import styles from 'styles/Header.module.scss'
 import { Button, Typography, Toolbar, AppBar, Avatar, MenuItem, IconButton, Menu } from '@material-ui/core'
 
 export default memo(function Nav () {
-  const { setUser, user, setToken, token } = useContext(userContext)
+  const { setUser, user, setToken } = useContext(userContext)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   useEffect(() => {
@@ -25,7 +25,6 @@ export default memo(function Nav () {
       } catch (error) {
         setUser(false)
         setToken(false)
-        console.log(token)
       }
     }
     loadUser()
