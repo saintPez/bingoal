@@ -10,7 +10,7 @@ interface IPayload {
 const tokenValidation: ValidationChain[] = checkSchema({
   token: {
     isString: {
-      errorMessage: 'token must be a string'
+      errorMessage: 'Token must be a string'
     },
     custom: {
       options: async (value, root) => {

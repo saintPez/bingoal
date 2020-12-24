@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (!user) {
           throw new ValidationError({
             value: req.body.password,
-            message: 'email is not correct',
+            message: 'Email is not correct',
             param: 'email',
             location: 'body'
           })
@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (!correctPassword) {
           throw new ValidationError({
             value: req.body.password,
-            message: 'password is not correct',
+            message: 'Password is not correct',
             param: 'password',
             location: 'body'
           })
@@ -64,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
       default: throw new ValidationError({
         value: req.method,
-        message: 'method is invalid',
+        message: 'Method is invalid',
         param: 'method',
         location: 'req'
       })

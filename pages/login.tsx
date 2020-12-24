@@ -1,8 +1,19 @@
+import { useContext, useEffect } from 'react'
 import Head from 'next/head'
+import Router from 'next/router'
+import userContext from 'context/userContext'
 import FormLogin from 'components/formLogin'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 export default function Login () {
-  return (
+  const { user, loadingUser } = useContext(userContext)
+
+  useEffect(() => {
+    if (!loadingUser && user) Router.push('/')
+  }, [loadingUser])
+
+  if (!loadingUser && !user) {
+    return (
     <>
       <Head>
         <title>LOGIN - BinGoal</title>
@@ -11,5 +22,15 @@ export default function Login () {
         <FormLogin/>
       </main>
     </>
-  )
+    )
+  } else {
+    return (
+      <>
+        <Head>
+          <title>LOADING - BinGoal</title>
+        </Head>
+        <CircularProgress />
+      </>
+    )
+  }
 }

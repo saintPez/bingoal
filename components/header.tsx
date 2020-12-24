@@ -4,17 +4,24 @@ import Axios from 'axios'
 import Link from 'next/link'
 import userContext from 'context/userContext'
 import styles from 'styles/Header.module.scss'
-import { Button, Typography, Toolbar, AppBar, Avatar, MenuItem, IconButton, Menu } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Toolbar from '@material-ui/core/Toolbar'
+import AppBar from '@material-ui/core/AppBar'
+import Avatar from '@material-ui/core/Avatar'
+import MenuItem from '@material-ui/core/MenuItem'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
 
 export default memo(function Nav () {
-  const { setUser, user, setToken } = useContext(userContext)
+  const { setUser, user, setToken, setLoadingUser } = useContext(userContext)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   useEffect(() => {
     const loadUser = async () => {
-      if (!localStorage.getItem('BINGOAL_TOKEN')) return
+      if (!localStorage.getItem('BINGOAL_TOKEN')) setLoadingUser(false)
       try {
-        const { data } = await Axios.get('api/profile/me', {
+        const { data } = await Axios.get('/api/profile/me', {
           headers: {
             token: `${localStorage.getItem('BINGOAL_TOKEN')}`
           },
@@ -23,11 +30,13 @@ export default memo(function Nav () {
         setUser(data.data)
         setToken(localStorage.getItem('BINGOAL_TOKEN'))
       } catch (error) {
+        console.log(error)
         setUser(false)
         setToken(false)
       }
     }
     loadUser()
+    setLoadingUser(false)
   }, [])
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {

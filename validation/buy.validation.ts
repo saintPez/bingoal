@@ -4,7 +4,7 @@ const buyValidation: ValidationChain[] = checkSchema({
   game: {
     optional: true,
     isString: {
-      errorMessage: 'game must be a string'
+      errorMessage: 'Game must be a string'
     }
   }
 })

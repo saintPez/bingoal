@@ -4,7 +4,7 @@ const gameValidation: ValidationChain[] = checkSchema({
   gameDate: {
     optional: true,
     isDate: {
-      errorMessage: 'gameDate should be a date'
+      errorMessage: 'Game Date should be a date'
     }
   }
 })

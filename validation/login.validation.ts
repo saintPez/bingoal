@@ -3,7 +3,7 @@ import { checkSchema, ValidationChain } from 'express-validator'
 const loginValidation: ValidationChain[] = checkSchema({
   email: {
     isEmail: {
-      errorMessage: 'email must be a valid email'
+      errorMessage: 'Email must be a valid email'
     }
   },
   password: {
@@ -11,7 +11,7 @@ const loginValidation: ValidationChain[] = checkSchema({
       options: {
         min: 8
       },
-      errorMessage: 'password must be at least 8 characters'
+      errorMessage: 'Password must be at least 8 characters'
     }
   }
 })

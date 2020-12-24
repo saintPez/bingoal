@@ -20,7 +20,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const pads = '0000'
         const hash = (
           await User.countDocuments({
-            nickname: req.body.nickname
+            nickname: {
+              $regex: new RegExp(req.body.nickname, 'i')
+            }
           })
         ).toString()
 
