@@ -29,7 +29,9 @@ export default function Login () {
         <Head>
           <title>LOADING - BinGoal</title>
         </Head>
-        <CircularProgress />
+        <main>
+          <CircularProgress />
+        </main>
       </>
     )
   }

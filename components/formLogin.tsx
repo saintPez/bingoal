@@ -1,7 +1,7 @@
 import { useContext, useState, FormEvent } from 'react'
 import Router from 'next/router'
 import userContext from 'context/userContext'
-import styles from 'styles/FormLogin.module.scss'
+import styles from 'styles/components/FormLogin.module.scss'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'

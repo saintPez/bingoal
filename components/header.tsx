@@ -48,7 +48,7 @@ export default memo(function Nav () {
   }
 
   return (
-    <AppBar position="sticky" color='default'>
+    <AppBar position="sticky" color='default' className={styles.appbar}>
       <Toolbar className={styles.header}>
         <Typography variant="h6" className={styles.title}>
           <Link href="/">
