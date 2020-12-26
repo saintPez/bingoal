@@ -1,5 +1,8 @@
 .container {
   flex-grow: 1;
+  box-sizing: border-box;
+  padding: 1rem;
+  height: calc(100vh - 64px - 100px);
 }
 
 .main {
@@ -7,11 +10,11 @@
 }
 
 .drawer {
-  width: 200px;
+  width: 190px;
 }
 
 .drawerPaper {
-  width: 200px;
+  width: 190px;
   z-index: 1 !important;
 }
 

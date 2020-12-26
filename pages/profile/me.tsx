@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
 import userContext from 'context/userContext'
@@ -10,23 +10,55 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
-import Avatar from '@material-ui/core/Avatar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Toolbar from '@material-ui/core/Toolbar'
 
-// import Typography from '@material-ui/core/Typography'
-// import MoreVertIcon from '@material-ui/icons/MoreVert'
-// import IconButton from '@material-ui/core/IconButton'
-// import CardContent from '@material-ui/core/CardContent'
-// import Card from '@material-ui/core/Card'
-// import CardHeader from '@material-ui/core/CardHeader'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import PersonIcon from '@material-ui/icons/Person'
+import GradeIcon from '@material-ui/icons/Grade'
+import HistoryIcon from '@material-ui/icons/History'
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount'
 
 export default function Me () {
   const { user, loadingUser } = useContext(userContext)
+  const [container, setContainer] = useState('Profile')
 
   useEffect(() => {
     if (!loadingUser && !user) Router.push('/')
   }, [loadingUser])
+
+  const switchContainer = () => {
+    switch (container) {
+      case 'Profile':
+        return (<>
+          <h1>Profile</h1>
+        </>)
+      case 'Buy': {
+        return (<>
+          <h1>Buy</h1>
+        </>)
+      }
+      case 'Won Games': {
+        return (<>
+          <h1>Won Games</h1>
+        </>)
+      }
+      case 'Purchased Games': {
+        return (<>
+          <h1>Purchased Games</h1>
+        </>)
+      }
+      case 'Admin': {
+        return (<>
+          <h1>Admin</h1>
+        </>)
+      }
+      default:
+        return (<>
+          <h1>Error</h1>
+        </>)
+    }
+  }
 
   if (!loadingUser && user) {
     return (
@@ -47,46 +79,53 @@ export default function Me () {
 
           <div>
             <List className={styles.list}>
-              <ListItem button>
+              <ListItem button onClick={() => setContainer('Profile')}>
                 <ListItemIcon>
-                  <Avatar>{`${user.firstname.substr(0, 1)}${user.lastname.substr(0, 1)}`}</Avatar>
+                  <PersonIcon/>
                 </ListItemIcon>
-                <ListItemText primary={`${user.nickname}#${user.hash}`}/>
+                <ListItemText primary='Profile'/>
+              </ListItem>
+              <ListItem button onClick={() => setContainer('Buy')}>
+                <ListItemIcon>
+                  <MonetizationOnIcon/>
+                </ListItemIcon>
+                <ListItemText primary='Buy'/>
+              </ListItem>
+              <ListItem button onClick={() => setContainer('Won Games')}>
+                <ListItemIcon>
+                  <GradeIcon/>
+                </ListItemIcon>
+                <ListItemText primary='Won Games'/>
+              </ListItem>
+              <ListItem button onClick={() => setContainer('Purchased Games')}>
+                <ListItemIcon>
+                  <HistoryIcon/>
+                </ListItemIcon>
+                <ListItemText primary='Purchased Games'/>
               </ListItem>
             </List>
-            <Divider/>
-            <List className={styles.list}>
-              <ListItem button>
-                <ListItemIcon>
-                  <Avatar>{`${user.firstname.substr(0, 1)}${user.lastname.substr(0, 1)}`}</Avatar>
-                </ListItemIcon>
-                <ListItemText primary={`${user.nickname}#${user.hash}`}/>
-              </ListItem>
-            </List>
+            {
+              user.admin
+                ? (<>
+                  <Divider/>
+                  <List className={styles.list}>
+                    <ListItem button onClick={() => setContainer('Admin')}>
+                      <ListItemIcon>
+                        <SupervisorAccountIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary='Admin'/>
+                    </ListItem>
+                  </List>
+                </>)
+                : (<></>)
+            }
           </div>
 
         </Drawer>
         <div className={styles.container}>
-          {/* <Card raised>
-            <CardHeader
-              avatar={
-                <Avatar>{`${user.firstname.substr(0, 1)}${user.lastname.substr(0, 1)}`}</Avatar>
-              }
-              title={`${user.firstname} ${user.lastname}`}
-              subheader={`${user.nickname}#${user.hash}`}
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-            />
-            <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt odit architecto et expedita dolores perspiciatis sint. Magnam, et numquam accusantium maiores quia fuga aliquam, tenetur harum beatae voluptate doloremque quae!
-              </Typography>
-            </CardContent>
-          </Card> */}
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum repellat facere eveniet esse sapiente nobis, beatae officia dicta ullam nostrum voluptas tenetur harum ipsam odit sunt, vitae numquam, incidunt dolor.</p>
+          {
+            switchContainer()
+          }
         </div>
       </main>
     </>

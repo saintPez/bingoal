@@ -1,6 +1,5 @@
 import Head from 'next/head'
-// import Link from 'next/link'
-import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 export default function Home () {
   return (
@@ -8,12 +7,7 @@ export default function Home () {
       <Head>
         <title>HOME - BinGoal</title>
       </Head>
-      <Button color="primary">
-        s
-      </Button>
-      <Button variant="contained" color="primary">
-        Primary
-      </Button>
+      <Typography variant="h1" component="h1">BinGoal</Typography>
     </>
   )
 }
