@@ -5,14 +5,16 @@ import styles from 'styles/components/FormRegister.module.scss'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
-import Visibility from '@material-ui/icons/Visibility'
-import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
+
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import DateFnsUtils from '@date-io/date-fns'
 import moment from 'moment'
+
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 export default function FormLogin () {
   const [showPassword, setShowPassword] = useState(false)
