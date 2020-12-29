@@ -1,5 +1,6 @@
 import { useContext, useState, FormEvent } from 'react'
 import Router from 'next/router'
+import Axios from 'axios'
 import userContext from 'context/userContext'
 import styles from 'styles/components/FormRegister.module.scss'
 import Typography from '@material-ui/core/Typography'
@@ -38,12 +39,8 @@ export default function FormLogin () {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    const response = await fetch('api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    try {
+      const { data } = await Axios.post('/api/register', {
         nickname,
         firstname,
         lastname,
@@ -51,39 +48,38 @@ export default function FormLogin () {
         password,
         dateOfBirth: `${moment(dateOfBirth).format('YYYY-MM-DD')}`
       })
-    })
-
-    const json = await response.json()
-    if (!json.success) {
-      setErrorNickname('')
-      setErrorFirstname('')
-      setErrorLastname('')
-      setErrorEmail('')
-      setErrorPassword('')
-      setErrorDateOfBirth('')
-      if (Array.isArray(json.error)) {
-        for (const error of json.error) {
-          if (error.param === 'nickname') setErrorNickname(`${error.msg}`)
-          else if (error.param === 'firstname') setErrorFirstname(`${error.msg}`)
-          else if (error.param === 'lastname') setErrorLastname(`${error.msg}`)
-          else if (error.param === 'email') setErrorEmail(`${error.msg}`)
-          else if (error.param === 'password') setErrorPassword(`${error.msg}`)
-          else if (error.param === 'dateOfBirth') setErrorDateOfBirth(`${error.msg}`)
+      setToken(data.token)
+      setUser(data.data)
+      Router.push('/')
+    } catch (error) {
+      if (!error.response.data.success) {
+        setErrorNickname('')
+        setErrorFirstname('')
+        setErrorLastname('')
+        setErrorEmail('')
+        setErrorPassword('')
+        setErrorDateOfBirth('')
+        if (Array.isArray(error.response.data.error)) {
+          for (const err of error.response.data.error) {
+            if (err.param === 'nickname') setErrorNickname(`${err.msg}`)
+            else if (err.param === 'firstname') setErrorFirstname(`${err.msg}`)
+            else if (err.param === 'lastname') setErrorLastname(`${err.msg}`)
+            else if (err.param === 'email') setErrorEmail(`${err.msg}`)
+            else if (err.param === 'password') setErrorPassword(`${err.msg}`)
+            else if (err.param === 'dateOfBirth') setErrorDateOfBirth(`${err.msg}`)
+          }
+          return
+        } else {
+          if (error.response.data.error.param === 'nickname') return setErrorNickname(`${error.response.data.error.message}`)
+          if (error.response.data.error.param === 'firstname') return setErrorFirstname(`${error.response.data.error.message}`)
+          if (error.response.data.error.param === 'lastname') return setErrorLastname(`${error.response.data.error.message}`)
+          if (error.response.data.error.param === 'email') return setErrorEmail(`${error.response.data.error.message}`)
+          if (error.response.data.error.param === 'password') return setErrorPassword(`${error.response.data.error.message}`)
+          if (error.response.data.error.param === 'dateOfBirth') return setErrorDateOfBirth(`${error.response.data.error.message}`)
+          return
         }
-        return
-      } else {
-        if (json.error.param === 'nickname') return setErrorNickname(`${json.error.message}`)
-        if (json.error.param === 'firstname') return setErrorFirstname(`${json.error.message}`)
-        if (json.error.param === 'lastname') return setErrorLastname(`${json.error.message}`)
-        if (json.error.param === 'email') return setErrorEmail(`${json.error.message}`)
-        if (json.error.param === 'password') return setErrorPassword(`${json.error.message}`)
-        if (json.error.param === 'dateOfBirth') return setErrorDateOfBirth(`${json.error.message}`)
-        return
       }
     }
-    setToken(json.token)
-    setUser(json.data)
-    Router.push('/')
   }
 
   return (
