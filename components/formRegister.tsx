@@ -12,7 +12,6 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import DateFnsUtils from '@date-io/date-fns'
-import moment from 'moment'
 
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
@@ -46,7 +45,7 @@ export default function FormLogin () {
         lastname,
         email,
         password,
-        dateOfBirth: `${moment(dateOfBirth).format('YYYY-MM-DD')}`
+        dateOfBirth: `${dateOfBirth.toISOString().substr(0, 10)}`
       })
       setToken(data.token)
       setUser(data.data)
