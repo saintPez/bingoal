@@ -95,6 +95,9 @@ export default memo(function Nav () {
                 <Link href='/drashboard'>
                   <MenuItem onClick={handleClose}>My count</MenuItem>
                 </Link>
+                <Link href='/profile/me'>
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                </Link>
                 <Link href='/logout'>
                   <MenuItem onClick={handleClose}>Logout</MenuItem>
                 </Link>
