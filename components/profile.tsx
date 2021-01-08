@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 
 interface IUser {
+  _id: string,
   nickname: string,
   hash: string,
   firstname: string,
@@ -50,10 +51,11 @@ export default function Profile ({ id }) {
             <title>{`${user.nickname}#${user.hash} - BinGoal`}</title>
         </Head>
         <Box boxShadow={5} borderRadius={10} className={styles.box} component='main'>
+          <Typography component='span' variant='h5'>{`${user._id}`}</Typography>
           <Typography component='h1' variant='h5'>{`${user.nickname}#${user.hash}`}</Typography>
           <Typography component='h2' variant='h5'>{`${user.firstname} ${user.lastname}`}</Typography>
-          <Typography component='h1' variant='h5'>{`${user.email}`}</Typography>
-          <Typography component='h1' variant='h5'>{`${user.dateOfBirth}`}</Typography>
+          <Typography component='h2' variant='h5'>{`${user.email}`}</Typography>
+          <Typography component='h2' variant='h5'>{`${user.dateOfBirth}`}</Typography>
         </Box>
       </>
     )
