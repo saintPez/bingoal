@@ -1,13 +1,41 @@
-.box {
-  margin: 2rem;
+.main {
   box-sizing: border-box;
-  width: 90%;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 1rem;
   height: calc(100vh - 64px - 100px - 4rem);
+  overflow: auto;
+}
+
+.paper {
+  width: 100%;
+}
+
+.user {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.userId {
+  width: 100%;
+  padding-left: 1rem;
+}
+
+.userAvatar {
+  margin: 1rem;
+}
+
+.avatar {
+  width: 7rem !important;
+  height: 7rem !important;
+  font-size: 4rem !important;
+}
+
+.userInfo {
+  margin: 1rem 0;
   overflow: auto;
 }
