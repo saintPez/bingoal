@@ -4,6 +4,8 @@ import Router from 'next/router'
 import Axios from 'axios'
 import styles from 'styles/components/Profile.module.scss'
 
+import Game from 'components/game'
+
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
@@ -12,17 +14,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Avatar from '@material-ui/core/Avatar'
 
-interface IUser {
-  _id: string,
-  nickname: string,
-  hash: string,
-  firstname: string,
-  lastname: string,
-  email: string,
-  dateOfBirth: Date,
-  wonGames: Array<any>
-  purchasedGames: Array<any>,
-}
+import { IUser } from 'models/User'
 
 function a11yProps (index: number) {
   return {
@@ -71,9 +63,8 @@ export default function Profile ({ id }) {
           },
           data: {}
         })
-        setUser(data.data)
+        setUser(data.data as IUser)
       } catch (error) {
-        console.log(error)
         setUser(false)
         setTimeout(() => {
           Router.push('/')
@@ -129,18 +120,34 @@ export default function Profile ({ id }) {
             </Tabs>
           </Paper>
           <TabPanel value={value} index={0}>
-            {user.purchasedGames.map((game) => (
-              <div key={game._id}>
-                {game}
-              </div>
-            ))}
+            {
+              !user.purchasedGames.length
+                ? (
+                <div>
+                  <Typography component='p' variant='body1'>Purchased Games not found</Typography>
+                </div>
+                  )
+                : user.purchasedGames.map((game) => (
+                  <div key={`${game}`}>
+                    <Game id={game}/>
+                  </div>
+                ))
+            }
           </TabPanel>
           <TabPanel value={value} index={1}>
-            {user.wonGames.map((game) => (
-                <div key={game._id}>
-                  {game}
+            {
+              !user.wonGames.length
+                ? (
+                <div>
+                  <Typography component='p' variant='body1'>Won Games not found</Typography>
                 </div>
-            ))}
+                  )
+                : user.wonGames.map((game) => (
+                  <div key={`${game}`}>
+                    <Game id={game}/>
+                  </div>
+                ))
+            }
           </TabPanel>
         </main>
       </>

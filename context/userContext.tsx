@@ -1,10 +1,12 @@
 import { createContext, useEffect, useState, useMemo } from 'react'
 
+import { IUser } from 'models/User'
+
 const AppContext = createContext(null)
 
 export const UserContextProvider = ({ children }) => {
   const [token, setToken] = useState<boolean | string>(true)
-  const [user, setUser] = useState<boolean | object>(false)
+  const [user, setUser] = useState<false | IUser>(false)
   const [loadingUser, setLoadingUser] = useState<boolean>(true)
 
   useEffect(() => {

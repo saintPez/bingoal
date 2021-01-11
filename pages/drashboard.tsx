@@ -5,6 +5,8 @@ import userContext from 'context/userContext'
 import styles from 'styles/Drashboard.module.scss'
 
 import Profile from 'components/drashboard/profile'
+import WonGames from 'components/drashboard/wonGames'
+import PurchasedGames from 'components/drashboard/purchasedGames'
 
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -47,14 +49,10 @@ export default function Me () {
         </>)
       }
       case 'Won Games': {
-        return (<>
-          <h1>Won Games</h1>
-        </>)
+        return <WonGames/>
       }
       case 'Purchased Games': {
-        return (<>
-          <h1>Purchased Games</h1>
-        </>)
+        return <PurchasedGames/>
       }
       case 'Admin': {
         return (<>

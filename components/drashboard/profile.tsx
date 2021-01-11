@@ -117,152 +117,154 @@ export default function Profile () {
     handleReset()
   }, [])
 
-  return (<>
-    <Avatar className={styles.avatar}>{`${user.firstname.substr(0, 1)}${user.lastname.substr(0, 1)}`}</Avatar>
-    <Typography variant='h5' component='h1' color='textPrimary'>{`${user.firstname} ${user.lastname}`}</Typography>
-    <Typography variant='h6' component='h2' color='textSecondary'>{`${user.nickname}#${user.hash}`}</Typography>
+  return (
+    <>
+      <Avatar className={styles.avatar}>{`${user.firstname.substr(0, 1)}${user.lastname.substr(0, 1)}`}</Avatar>
+      <Typography variant='h5' component='h1' color='textPrimary'>{`${user.firstname} ${user.lastname}`}</Typography>
+      <Typography variant='h6' component='h2' color='textSecondary'>{`${user.nickname}#${user.hash}`}</Typography>
 
-    <Box boxShadow={5} borderRadius={10} className={styles.box}>
-      <ValidatorForm onSubmit={handleSubmit} className={styles.form}>
-        <Grid container spacing={3} className={styles.grid}>
-          <Grid item xs={12}>
-            <Typography variant='h5' component='h3' color='textSecondary'>General Information</Typography>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <TextValidator
-              disabled={disabled}
-              name="firstname"
-              label="Firstname"
-              value={firstname}
-              variant="filled"
-              fullWidth
-              onChange={(e) => setFirstname(`${(e.target as HTMLInputElement).value}`)}
-              validators={['required', 'minStringLength:4']}
-              errorMessages={['Firstname is required', 'Firstname must be at least 4 characters']}
-              error={Boolean(errorFirstname)}
-              helperText={` ${errorFirstname}`}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <TextValidator
-              disabled={disabled}
-              name="lastname"
-              label="Lastname"
-              value={lastname}
-              variant="filled"
-              fullWidth
-              onChange={(e) => setLastname(`${(e.target as HTMLInputElement).value}`)}
-              validators={['required', 'minStringLength:4']}
-              errorMessages={['Lastname is required', 'Lastname must be at least 4 characters']}
-              error={Boolean(errorLastname)}
-              helperText={` ${errorLastname}`}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <TextValidator
-              disabled={disabled}
-              name="nickname"
-              label="Nickname"
-              value={nickname}
-              variant="filled"
-              fullWidth
-              onChange={(e) => setNickname(`${(e.target as HTMLInputElement).value}`)}
-              validators={['required', 'minStringLength:4']}
-              errorMessages={['Nickname is required', 'Nickname must be at least 4 characters']}
-              error={Boolean(errorNickname)}
-              helperText={` ${errorNickname}`}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <TextValidator
-              disabled={disabled}
-              name="email"
-              label="Email"
-              value={email}
-              variant="filled"
-              fullWidth
-              onChange={(e) => setEmail(`${(e.target as HTMLInputElement).value}`)}
-              validators={['required', 'isEmail']}
-              errorMessages={['Email is required', 'Email is not valid']}
-              error={Boolean(errorEmail)}
-              helperText={` ${errorEmail}`}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <TextValidator
-              type={showPassword ? 'text' : 'password'}
-              disabled={disabled}
-              name="password"
-              label="Password"
-              value={password}
-              variant="filled"
-              fullWidth
-              onChange={(e) => setPassword(`${(e.target as HTMLInputElement).value}`)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      onMouseDown={(e) => e.preventDefault()}
-                    >
-                      {showPassword ? <Visibility color='action'/> : <VisibilityOff color='action'/>}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-              validators={['required', 'minStringLength:8']}
-              errorMessages={['Password is required', 'Password must be at least 8 characters']}
-              error={Boolean(errorPassword)}
-              helperText={` ${errorPassword}`}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
+      <Box boxShadow={5} borderRadius={10} className={styles.box}>
+        <ValidatorForm onSubmit={handleSubmit} className={styles.form}>
+          <Grid container spacing={3} className={styles.grid}>
+            <Grid item xs={12}>
+              <Typography variant='h5' component='h3' color='textSecondary'>General Information</Typography>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextValidator
                 disabled={disabled}
-                disableToolbar
-                variant="inline"
-                format="yyyy-MM-dd"
-                id="dateOfBirth"
-                inputVariant='filled'
-                label="Date Of Birth"
-                value={dateOfBirth}
+                name="firstname"
+                label="Firstname"
+                value={firstname}
+                variant="filled"
                 fullWidth
-                onChange={(date: Date | null) => { setDateOfBirth(date) }}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date'
-                }}
-                error={Boolean(errorDateOfBirth)}
-                helperText={` ${errorDateOfBirth}`}
+                onChange={(e) => setFirstname(`${(e.target as HTMLInputElement).value}`)}
+                validators={['required', 'minStringLength:4']}
+                errorMessages={['Firstname is required', 'Firstname must be at least 4 characters']}
+                error={Boolean(errorFirstname)}
+                helperText={` ${errorFirstname}`}
               />
-            </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextValidator
+                disabled={disabled}
+                name="lastname"
+                label="Lastname"
+                value={lastname}
+                variant="filled"
+                fullWidth
+                onChange={(e) => setLastname(`${(e.target as HTMLInputElement).value}`)}
+                validators={['required', 'minStringLength:4']}
+                errorMessages={['Lastname is required', 'Lastname must be at least 4 characters']}
+                error={Boolean(errorLastname)}
+                helperText={` ${errorLastname}`}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextValidator
+                disabled={disabled}
+                name="nickname"
+                label="Nickname"
+                value={nickname}
+                variant="filled"
+                fullWidth
+                onChange={(e) => setNickname(`${(e.target as HTMLInputElement).value}`)}
+                validators={['required', 'minStringLength:4']}
+                errorMessages={['Nickname is required', 'Nickname must be at least 4 characters']}
+                error={Boolean(errorNickname)}
+                helperText={` ${errorNickname}`}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextValidator
+                disabled={disabled}
+                name="email"
+                label="Email"
+                value={email}
+                variant="filled"
+                fullWidth
+                onChange={(e) => setEmail(`${(e.target as HTMLInputElement).value}`)}
+                validators={['required', 'isEmail']}
+                errorMessages={['Email is required', 'Email is not valid']}
+                error={Boolean(errorEmail)}
+                helperText={` ${errorEmail}`}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <TextValidator
+                type={showPassword ? 'text' : 'password'}
+                disabled={disabled}
+                name="password"
+                label="Password"
+                value={password}
+                variant="filled"
+                fullWidth
+                onChange={(e) => setPassword(`${(e.target as HTMLInputElement).value}`)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        onMouseDown={(e) => e.preventDefault()}
+                      >
+                        {showPassword ? <Visibility color='action'/> : <VisibilityOff color='action'/>}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                validators={['required', 'minStringLength:8']}
+                errorMessages={['Password is required', 'Password must be at least 8 characters']}
+                error={Boolean(errorPassword)}
+                helperText={` ${errorPassword}`}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disabled={disabled}
+                  disableToolbar
+                  variant="inline"
+                  format="yyyy-MM-dd"
+                  id="dateOfBirth"
+                  inputVariant='filled'
+                  label="Date Of Birth"
+                  value={dateOfBirth}
+                  fullWidth
+                  onChange={(date: Date | null) => { setDateOfBirth(date) }}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date'
+                  }}
+                  error={Boolean(errorDateOfBirth)}
+                  helperText={` ${errorDateOfBirth}`}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            {/* <Grid item xs={12}>
+              <Typography variant='h5' component='h3' color='textSecondary'>Private Information</Typography>
+            </Grid> */}
+            <Grid item xs={12}>
+              <Button
+                className={styles.button}
+                type='submit'
+                variant='contained'
+                color='primary'
+                disabled={disabled}
+                startIcon={<SaveIcon/>}
+              >
+                Save
+              </Button>
+              <Button
+                className={styles.button}
+                variant='contained'
+                color='default'
+                startIcon={ disabled ? <EditIcon/> : <HistoryIcon/> }
+                onClick={() => { handleReset(); setDisabled(!disabled) }}
+              >
+                { disabled ? 'Edit' : 'Reset' }
+              </Button>
+            </Grid>
           </Grid>
-          {/* <Grid item xs={12}>
-            <Typography variant='h5' component='h3' color='textSecondary'>Private Information</Typography>
-          </Grid> */}
-          <Grid item xs={12}>
-            <Button
-              className={styles.button}
-              type='submit'
-              variant='contained'
-              color='primary'
-              disabled={disabled}
-              startIcon={<SaveIcon/>}
-            >
-              Save
-            </Button>
-            <Button
-              className={styles.button}
-              variant='contained'
-              color='default'
-              startIcon={ disabled ? <EditIcon/> : <HistoryIcon/> }
-              onClick={() => { handleReset(); setDisabled(!disabled) }}
-            >
-              { disabled ? 'Edit' : 'Reset' }
-            </Button>
-          </Grid>
-        </Grid>
-      </ValidatorForm>
-    </Box>
-  </>)
+        </ValidatorForm>
+      </Box>
+    </>
+  )
 }
