@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const user: IUser = await User.findById(req.body._id)
         if (!user) throw new Error('user not found')
 
-        const game: IGame = await Game.findById(req.query.id).populate('cards')
+        const game: IGame = await Game.findById(req.query.id).populate('cards').populate('purchasedCards')
         if (!game) throw new Error('Game not found')
 
         res.status(200).json(

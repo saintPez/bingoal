@@ -183,7 +183,7 @@ export default function FormLogin () {
         </MuiPickersUtilsProvider>
       </div>
       <Button type='submit' variant='contained' color='primary' fullWidth>
-        Login
+        Register
       </Button>
     </ValidatorForm>
   </Box>

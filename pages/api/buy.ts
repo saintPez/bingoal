@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         await validateAuth(req, res)
         await validateReq(req, res)
 
-        const user: IUser = await User.findById(req.body._id)
+        const user: IUser = await User.findById(req.body._id).populate('purchasedGames')
         if (!user) throw new Error('user not found')
 
         const game: IGame = await Game.findOne(
@@ -32,11 +32,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const card = game.cards.find((element) => element)
         if (!card) throw new Error('card not found')
 
-        await user.updateOne({
-          $push: {
-            purchasedGames: game._id
-          }
-        })
+        if (!user.purchasedGames.find((element) => element._id === game._id)) {
+          await user.updateOne({
+            $push: {
+              purchasedGames: game._id
+            }
+          })
+        }
 
         const purchasedCard: IPurchasedCard = new PurchasedCard({
           user: req.body._id,

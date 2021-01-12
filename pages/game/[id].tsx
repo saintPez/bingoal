@@ -4,11 +4,11 @@ import Head from 'next/head'
 import Router from 'next/router'
 
 import userContext from 'context/userContext'
-import Profile from 'components/profile'
+import Game from 'components/game'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-export default function ProfileId ({ id }) {
+export default function GameId ({ id }) {
   const { user, loadingUser } = useContext(userContext)
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function ProfileId ({ id }) {
         <Head>
           <title>{`${user.nickname}#${user.hash} - BinGoal`}</title>
         </Head>
-        <Profile id={`${id}`}/>
+        <Game id={`${id}`}/>
       </>
     )
   } else {

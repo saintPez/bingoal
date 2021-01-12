@@ -18,6 +18,10 @@ export default async function dbConnect () {
       console.log(
                 `INFO: Database is connected to '${process.env.MONGO_URI}'`
       )
+      import('models/Card')
+      import('models/Game')
+      import('models/User')
+      import('models/purchasedCard')
     })
   } catch (error) {
     console.log(`ERROR: an error has occured in the database: ${error}`)

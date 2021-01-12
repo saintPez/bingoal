@@ -42,7 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const newCard = await card.save()
 
-        const games: IGame[] = await Game.find({})
+        const games: IGame[] = await Game.find({ played: false, playing: false })
         if (games !== []) {
           for (const game of games) {
             game.updateOne({

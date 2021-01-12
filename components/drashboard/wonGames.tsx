@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import userContext from 'context/userContext'
 // import styles from 'styles/drashboard/WonGames.module.scss'
 
-import Game from 'components/game'
+import InfoGame from 'components/infoGame'
 
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -22,7 +22,7 @@ export default function WonGames () {
             {
               (user.wonGames as Array<IGame>).map((game) => (
                 <Grid key={`${game}`} item xs={12}>
-                  <Game id={game}/>
+                  <InfoGame id={game} won={true}/>
                 </Grid>
               ))
             }
