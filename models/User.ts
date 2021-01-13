@@ -93,11 +93,4 @@ userSchema.method(
   }
 )
 
-userSchema.method(
-  'validatePassword',
-  async function (password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.password)
-  }
-)
-
 export default models.User || model<IUser>('User', userSchema)

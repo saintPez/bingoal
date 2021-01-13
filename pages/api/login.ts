@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import cors from 'cors'
+import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
 import dbConnect from 'utils/dbConnect'
 import User, { IUser } from 'models/User'
@@ -29,9 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           })
         }
 
-        const correctPassword: boolean = await user.validatePassword(
-          req.body.password
-        )
+        const correctPassword: boolean = await bcrypt.compare(req.body.password, user.password)
         if (!correctPassword) {
           throw new ValidationError({
             value: req.body.password,
