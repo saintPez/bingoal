@@ -116,7 +116,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             (element) => element === game.balls[game.balls.length - 1]
           )
           card.score[ind] = true
-          await PurchasedCard.updateOne(card._id, { score: card.score })
+          await PurchasedCard.updateOne({ _id: card._id }, { score: card.score })
 
           let count = 0
           for (const bool of card.score) {

@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           req.body.hash = pads.substring(0, pads.length - hash.length) + hash
         }
 
-        await User.findByIdAndUpdate(req.body._id, {
+        await User.updateOne({ _id: req.body._id }, {
           nickname: req.body.nickname,
           firstname: req.body.firstname,
           lastname: req.body.lastname,
