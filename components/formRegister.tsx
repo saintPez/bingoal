@@ -3,6 +3,7 @@ import Router from 'next/router'
 import Axios from 'axios'
 import userContext from 'context/userContext'
 import styles from 'styles/components/FormRegister.module.scss'
+
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'

@@ -6,22 +6,28 @@ import Typography from '@material-ui/core/Typography'
 
 import { IGame } from 'models/Game'
 
-export default function InfoGame ({ id }) {
-  const [game, setGame] = useState<IGame | false>(false)
+interface IProps {
+  id?: string,
+  _game?: IGame
+}
+
+export default function InfoGame (props: IProps) {
+  const [game, setGame] = useState<IGame | false>(props._game || false)
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const loadGame = async () => {
       try {
-        const { data } = await Axios.get(`/api/game/${id}`, {
-          headers: {
-            token: `${localStorage.getItem('BINGOAL_TOKEN')}`
-          },
-          data: {}
-        })
-        setGame(data.data as IGame)
+        if (!game && props.id) {
+          const { data } = await Axios.get(`/api/game/${props.id}`, {
+            headers: {
+              token: `${localStorage.getItem('BINGOAL_TOKEN')}`
+            },
+            data: {}
+          })
+          setGame(data.data as IGame)
+        }
       } catch (error) {
-        console.log(error.response)
         setGame(false)
       }
     }

@@ -10,24 +10,35 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
+
 import LaunchIcon from '@material-ui/icons/Launch'
 
 import { IGame } from 'models/Game'
 
-export default function Game ({ id, won }) {
-  const [game, setGame] = useState<IGame | false>(false)
+interface IProps {
+  id?: string,
+  won?: boolean,
+  _game?: IGame
+}
+
+export default function Game (props: IProps) {
+  const [game, setGame] = useState<IGame | false>(props._game || false)
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const loadGame = async () => {
       try {
-        const { data } = await Axios.get(`/api/game/${id}`, {
-          headers: {
-            token: `${localStorage.getItem('BINGOAL_TOKEN')}`
-          },
-          data: {}
-        })
-        setGame(data.data as IGame)
+        if (!game && props.id) {
+          const { data } = await Axios.get(`/api/game/${props.id}`, {
+            headers: {
+              token: `${localStorage.getItem('BINGOAL_TOKEN')}`
+            },
+            data: {}
+          })
+          setGame(data.data as IGame)
+        }
       } catch (error) {
         setGame(false)
       }
@@ -38,15 +49,57 @@ export default function Game ({ id, won }) {
 
   if (!loading && game) {
     return (
-      <Card className={!won && styles.won} variant='outlined'>
+      <Card className={props.won && styles.won} variant='outlined'>
         <CardActions className={styles.actions}>
           <Typography color="textSecondary">{`ID: ${game._id}`}</Typography>
           <Link href={`/game/${game._id}`}>
             <Button size="small" endIcon={<LaunchIcon/>}>Open</Button>
           </Link>
         </CardActions>
-        <CardContent>
-          <Typography variant="h5" component="h1">Game</Typography>
+        <CardContent className={styles.content}>
+          <div>
+            <Typography variant="h5" component="h1">Game</Typography>
+            <br/>
+            {game.played && <Typography color="textSecondary">Played</Typography>}
+            {game.playing && <Typography color="textSecondary">Playing</Typography>}
+          </div>
+          <div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                disabled
+                variant="inline"
+                format="yyyy-MM-dd"
+                margin="normal"
+                id="createdAt"
+                label="Created at"
+                value={new Date(game.createdAt)}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date'
+                }}
+                onChange={() => {}}
+                inputVariant='standard'
+              />
+            </MuiPickersUtilsProvider>
+            <br/>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                disabled
+                variant="inline"
+                format="yyyy-MM-dd"
+                margin="normal"
+                id="gameDate"
+                label="Game date"
+                value={new Date(game.gameDate)}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date'
+                }}
+                onChange={() => {}}
+                inputVariant='standard'
+              />
+            </MuiPickersUtilsProvider>
+          </div>
         </CardContent>
       </Card>
     )

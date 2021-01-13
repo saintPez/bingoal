@@ -22,7 +22,7 @@ export default function PurchasedGames () {
             {
               (user.purchasedGames as Array<IGame>).map((game) => (
                 <Grid key={`${game}`} item xs={12} md={6} lg={4}>
-                  <InfoGame id={game} won={!!user.wonGames.find((element) => element === game)}/>
+                  <InfoGame id={`${game}`} won={!!user.wonGames.find((element) => element === game)}/>
                 </Grid>
               ))
             }

@@ -7,6 +7,7 @@ import InfoGame from 'components/infoGame'
 
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+
 import { IGame } from 'models/Game'
 
 export default function WonGames () {
@@ -21,8 +22,8 @@ export default function WonGames () {
           <Grid container spacing={3}>
             {
               (user.wonGames as Array<IGame>).map((game) => (
-                <Grid key={`${game}`} item xs={12}>
-                  <InfoGame id={game} won={true}/>
+                <Grid key={`${game}`} item xs={12} md={6} lg={4}>
+                  <InfoGame id={`${game}`} won={true}/>
                 </Grid>
               ))
             }
