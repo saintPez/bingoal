@@ -49,7 +49,7 @@ export default function GameId () {
             {
               (games as Array<IGame>).map((game) => (
                 <Grid key={`${game._id}`} item xs={12} md={6} lg={4}>
-                  <InfoGame _game={game}/>
+                  <InfoGame data={game}/>
                 </Grid>
               ))
             }

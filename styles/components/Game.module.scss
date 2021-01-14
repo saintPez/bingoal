@@ -1,0 +1,14 @@
+.main {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: calc(100vh - 64px - 100px - 4rem);
+}
+.grid {
+  box-sizing: border-box;
+}

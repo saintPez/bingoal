@@ -20,11 +20,11 @@ import { IGame } from 'models/Game'
 interface IProps {
   id?: string,
   won?: boolean,
-  _game?: IGame
+  data?: IGame
 }
 
 export default function Game (props: IProps) {
-  const [game, setGame] = useState<IGame | false>(props._game || false)
+  const [game, setGame] = useState<IGame | false>(props.data || false)
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
