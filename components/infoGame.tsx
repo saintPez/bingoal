@@ -49,7 +49,7 @@ export default function Game (props: IProps) {
 
   if (!loading && game) {
     return (
-      <Card className={props.won && styles.won} variant='outlined'>
+      <Card className={props.won ? styles.won : ''} variant='outlined'>
         <CardActions className={styles.actions}>
           <Typography color="textSecondary">{`ID: ${game._id}`}</Typography>
           <Link href={`/game/${game._id}`}>

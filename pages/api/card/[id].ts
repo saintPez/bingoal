@@ -3,7 +3,6 @@ import cors from 'cors'
 import dbConnect from 'utils/dbConnect'
 import User, { IUser } from 'models/User'
 import Card, { ICard } from 'models/Card'
-import Game, { IGame } from 'models/Game'
 import { initMiddleware, validate } from 'utils/middleware'
 import cardValidation from 'validation/card.validation'
 import tokenValidation from 'validation/token.validation'
@@ -24,30 +23,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const user: IUser = await User.findById(req.body._id)
         if (!user) throw new Error('user not found')
 
-        const game: IGame = await Game.findOne(
-          req.body.game || {}
-        ).populate('cards')
-        if (!game) {
-          const cards: ICard[] = await Card.find({ _id: req.query.id })
-          if (!cards) throw new Error('card not found')
-
-          return res.status(200).json(
-            JSON.stringify(
-              {
-                success: true,
-                data: cards
-              },
-              null,
-              4
-            )
-          )
-        }
+        const card: ICard = await Card.findById(req.query.id)
+        if (!card) throw new Error('card not found')
 
         res.status(200).json(
           JSON.stringify(
             {
               success: true,
-              data: game.cards
+              data: card
             },
             null,
             4

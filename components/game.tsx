@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, ReactNode } from 'react'
 import Axios from 'axios'
 import styles from 'styles/components/Game.module.scss'
 
@@ -6,9 +6,45 @@ import Card from 'components/card'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Box from '@material-ui/core/Box'
 
 import { IGame } from 'models/Game'
+
+function a11yProps (index: number) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`
+  }
+}
+
+interface TabPanelProps {
+  children?: ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel (props: TabPanelProps) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  )
+}
 
 interface IProps {
   id?: string,
@@ -18,6 +54,7 @@ interface IProps {
 export default function InfoGame (props: IProps) {
   const [game, setGame] = useState<IGame | false>(props.data || false)
   const [loading, setLoading] = useState<boolean>(true)
+  const [value, setValue] = useState<number>(0)
 
   useEffect(() => {
     const loadGame = async () => {
@@ -41,17 +78,35 @@ export default function InfoGame (props: IProps) {
 
   if (!loading && game) {
     return (
-      <>
-        <main className={styles.main}>
-          <Grid className={styles.grid} container spacing={3}>
+      <main className={styles.main}>
+        <Paper className={styles.paper}>
+          <Tabs
+            value={value}
+            onChange={(event, newValue: number) => { setValue(newValue) }}
+            indicatorColor="primary"
+            textColor="primary"
+          >
+            <Tab label="Cards" {...a11yProps(0)}/>
+            <Tab label="Purchased Cards" {...a11yProps(1)}/>
+          </Tabs>
+        </Paper>
+        <div className={styles.tabPanels}>
+          <TabPanel value={value} index={0}>
+            <div className={styles.content}>
             {game.cards.map((card) => (
-              <Grid key={card._id} item xs={12} sm={6} md={4} lg={3}>
-                <Card data={card}/>
-              </Grid>
+              <Card key={card._id} data={card} purchased={false}/>
             ))}
-          </Grid>
-        </main>
-      </>
+            </div>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <div className={styles.content}>
+            {game.purchasedCards.map((purchasedCard) => (
+              <Card key={`${purchasedCard.card}`} id={`${purchasedCard.card}`} purchased={true}/>
+            ))}
+            </div>
+          </TabPanel>
+        </div>
+      </main>
     )
   } else if (loading) {
     return (

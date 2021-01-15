@@ -10,7 +10,8 @@
   overflow: auto;
 }
 
-.paper {
+.paper,
+.tabPanels {
   width: 100%;
 }
 
@@ -38,8 +39,4 @@
 .userInfo {
   margin: 1rem 0;
   overflow: auto;
-}
-
-.tabPanels {
-  width: 100%;
 }

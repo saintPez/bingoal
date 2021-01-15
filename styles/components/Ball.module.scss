@@ -1,0 +1,11 @@
+.ball {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  background-color: #fff;
+  border-radius: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}

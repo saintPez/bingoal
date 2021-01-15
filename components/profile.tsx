@@ -121,40 +121,40 @@ export default function Profile ({ id }) {
             </Tabs>
           </Paper>
           <div className={styles.tabPanels}>
-          <TabPanel value={value} index={0}>
-            <Grid container spacing={3}>
-            {
-              !user.purchasedGames.length
-                ? (
-                <Grid item xs={12}>
-                  <Typography component='p' variant='body1'>Purchased Games not found</Typography>
-                </Grid>
-                  )
-                : user.purchasedGames.map((game) => (
-                  <Grid key={`${game}`} item xs={12} md={6} lg={4}>
-                    <InfoGame id={`${game}`} won={!!user.wonGames.find((element) => element === game)}/>
+            <TabPanel value={value} index={0}>
+              <Grid container spacing={3}>
+              {
+                !user.purchasedGames.length
+                  ? (
+                  <Grid item xs={12}>
+                    <Typography component='p' variant='body1'>Purchased Games not found</Typography>
                   </Grid>
-                ))
-            }
-            </Grid>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Grid container spacing={3}>
-            {
-              !user.wonGames.length
-                ? (
-                <Grid item xs={12}>
-                  <Typography component='p' variant='body1'>Won Games not found</Typography>
-                </Grid>
-                  )
-                : user.wonGames.map((game) => (
-                  <Grid key={`${game}`} item xs={12} md={6} lg={4}>
-                    <InfoGame id={`${game}`} won={true}/>
+                    )
+                  : user.purchasedGames.map((game) => (
+                    <Grid key={`${game}`} item xs={12} md={6} lg={4}>
+                      <InfoGame id={`${game}`} won={!!user.wonGames.find((element) => element === game)}/>
+                    </Grid>
+                  ))
+              }
+              </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Grid container spacing={3}>
+              {
+                !user.wonGames.length
+                  ? (
+                  <Grid item xs={12}>
+                    <Typography component='p' variant='body1'>Won Games not found</Typography>
                   </Grid>
-                ))
-            }
-            </Grid>
-          </TabPanel>
+                    )
+                  : user.wonGames.map((game) => (
+                    <Grid key={`${game}`} item xs={12} md={6} lg={4}>
+                      <InfoGame id={`${game}`} won={true}/>
+                    </Grid>
+                  ))
+              }
+              </Grid>
+            </TabPanel>
           </div>
         </main>
       </>

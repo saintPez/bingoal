@@ -19,7 +19,7 @@ export default function GameId ({ id }) {
     return (
       <>
         <Head>
-          <title>{`${user.nickname}#${user.hash} - BinGoal`}</title>
+          <title>{`Game#${id} - BinGoal`}</title>
         </Head>
         <Game id={`${id}`}/>
       </>
