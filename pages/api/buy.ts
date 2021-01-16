@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const card = game.cards.find((element) => element)
         if (!card) throw new Error('card not found')
 
-        if (!user.purchasedGames.find((element) => element._id === game._id)) {
+        if (!user.purchasedGames.find((element) => `${element._id}` === `${game._id}`)) {
           await user.updateOne({
             $push: {
               purchasedGames: game._id

@@ -1,6 +1,7 @@
 .content {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-auto-flow: column;
+  grid-template-rows: repeat(5, 1fr);
   grid-gap: 0.5rem;
 }
 
@@ -20,4 +21,10 @@
 .card {
   margin: 0.5rem;
   width: 200px;
+}
+
+.mycard {
+  margin: 0.5rem;
+  width: 200px;
+  border-color: #4caf50 !important;
 }

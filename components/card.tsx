@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Router from 'next/router'
 import Axios from 'axios'
 import styles from 'styles/components/Card.module.scss'
 
@@ -14,14 +15,31 @@ import Button from '@material-ui/core/Button'
 import { ICard } from 'models/Card'
 
 interface IProps {
+  game: string
   id?: string,
   data?: ICard
-  purchased: boolean
+  purchased: boolean,
+  user?: boolean
 }
 
 export default function GameCard (props: IProps) {
   const [card, setCard] = useState<ICard | false>(props.data || false)
   const [loading, setLoading] = useState<boolean>(true)
+
+  const handleClick = async () => {
+    try {
+      await Axios.post(`/api/buy/${(card as ICard)._id}`, {
+        game: props.game
+      }, {
+        headers: {
+          token: `${localStorage.getItem('BINGOAL_TOKEN')}`
+        }
+      })
+      Router.reload()
+    } catch (error) {
+      Router.reload()
+    }
+  }
 
   useEffect(() => {
     const loadGame = async () => {
@@ -47,7 +65,7 @@ export default function GameCard (props: IProps) {
   if (!loading && card) {
     return (
       <>
-        <Card className={styles.card} variant='outlined'>
+        <Card className={props.user ? styles.mycard : styles.card} variant='outlined'>
           <CardContent>
             <div className={styles.header}>
               <div>B</div>
@@ -67,7 +85,7 @@ export default function GameCard (props: IProps) {
           {
             !props.purchased && (
               <CardActions>
-                <Button size="small">Buy</Button>
+                <Button size="small" onClick={handleClick}>Buy</Button>
               </CardActions>
             )
           }
@@ -80,7 +98,12 @@ export default function GameCard (props: IProps) {
     )
   } else {
     return (
-      <Typography component='h1' variant='body1'>Card not found</Typography>
+      <Card className={styles.card} variant='outlined'>
+        <CardContent>
+          <CircularProgress />
+          <Typography component='h1' variant='body1'>Card not found</Typography>
+        </CardContent>
+      </Card>
     )
   }
 }

@@ -21,7 +21,7 @@ export default function GameId ({ id }) {
         <Head>
           <title>{`Game#${id} - BinGoal`}</title>
         </Head>
-        <Game id={`${id}`}/>
+        <Game id={`${id}`} user={user._id}/>
       </>
     )
   } else {

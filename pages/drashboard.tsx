@@ -5,6 +5,7 @@ import userContext from 'context/userContext'
 import styles from 'styles/Drashboard.module.scss'
 
 import Profile from 'components/drashboard/profile'
+import Buy from 'components/drashboard/buy'
 import WonGames from 'components/drashboard/wonGames'
 import PurchasedGames from 'components/drashboard/purchasedGames'
 
@@ -44,9 +45,7 @@ export default function Me () {
         return <Profile/>
       }
       case 'Buy': {
-        return (<>
-          <h1>Buy</h1>
-        </>)
+        return <Buy/>
       }
       case 'Won Games': {
         return <WonGames/>

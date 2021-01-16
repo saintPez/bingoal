@@ -48,7 +48,8 @@ function TabPanel (props: TabPanelProps) {
 
 interface IProps {
   id?: string,
-  data?: IGame
+  data?: IGame,
+  user?: string
 }
 
 export default function InfoGame (props: IProps) {
@@ -94,14 +95,14 @@ export default function InfoGame (props: IProps) {
           <TabPanel value={value} index={0}>
             <div className={styles.content}>
             {game.cards.map((card) => (
-              <Card key={card._id} data={card} purchased={false}/>
+              <Card key={card._id} data={card} purchased={false} game={game._id}/>
             ))}
             </div>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <div className={styles.content}>
             {game.purchasedCards.map((purchasedCard) => (
-              <Card key={`${purchasedCard.card}`} id={`${purchasedCard.card}`} purchased={true}/>
+              <Card key={`${purchasedCard.card}`} id={`${purchasedCard.card}`} purchased={true} user={props.user === `${purchasedCard.user}`} game={game._id}/>
             ))}
             </div>
           </TabPanel>

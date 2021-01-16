@@ -27,15 +27,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const game: IGame = await Game.findOne(
           req.body.game ? { _id: req.body.game } : {}
-        ).populate('cards')
+        ).populate('cards').populate('purchasedCards:')
         if (!game) throw new Error('game not found')
 
         const card: ICard = game.cards.find(
-          (element) => element._id === req.query.id
+          (element) => `${element._id}` === req.query.id
         )
         if (!card) throw new Error('card not found')
 
-        if (!user.purchasedGames.find((element) => element._id === game._id)) {
+        if (!user.purchasedGames.find((element) => `${element._id}` === `${game._id}`)) {
           await user.updateOne({
             $push: {
               purchasedGames: game._id
