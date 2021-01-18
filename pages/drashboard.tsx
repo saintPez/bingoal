@@ -8,6 +8,7 @@ import Profile from 'components/drashboard/profile'
 import Buy from 'components/drashboard/buy'
 import WonGames from 'components/drashboard/wonGames'
 import PurchasedGames from 'components/drashboard/purchasedGames'
+import Admin from 'components/drashboard/admin'
 
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -54,9 +55,7 @@ export default function Me () {
         return <PurchasedGames/>
       }
       case 'Admin': {
-        return (<>
-          <h1>Admin</h1>
-        </>)
+        return <Admin/>
       }
       default:
         return (<>

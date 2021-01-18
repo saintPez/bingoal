@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await middlewareCors(req, res)
     switch (req.method) {
-      case 'GET': {
+      case 'PUT': {
         await dbConnect()
         await validateAuth(req, res)
         await validateReq(req, res)
@@ -30,11 +30,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         if (game.gameDate > new Date()) throw new Error('game has not started yet')
 
-        if (!game.played) throw new Error('game has already been played')
+        if (game.played) throw new Error('game has already been played')
 
         if (game.playing) throw new Error('game is playing')
 
-        game.updateOne({ playing: true })
+        await game.updateOne({ playing: true })
 
         res.status(200).json(
           JSON.stringify(
@@ -51,6 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       default: throw new Error('method is invalid')
     }
   } catch (error) {
+    console.log(error)
     res.status(400).json(
       JSON.stringify(
         {

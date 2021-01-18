@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import Axios from 'axios'
 
-import InfoGame from 'components/infoGame'
-
-import { IGame } from 'models/Game'
+import Game from 'components/admin/game'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 
-export default function Buy () {
+import { IGame } from 'models/Game'
+
+export default function Admin () {
   const [games, setGames] = useState<IGame[] | false>(false)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -33,35 +33,20 @@ export default function Buy () {
 
   if (!loading && games) {
     return (
-      <>
-        <Grid container spacing={3}>
-          {
-            (games as Array<IGame>).map((game) => {
-              if (!game.played && !game.playing) {
-                return (
-                  <Grid key={`${game._id}`} item xs={12} md={6} lg={4}>
-                    <InfoGame data={game}/>
-                  </Grid>
-                )
-              } else {
-                return (
-                  <></>
-                )
-              }
-            })
-          }
-        </Grid>
-      </>
-    )
-  } else if (loading && !games) {
-    return (
-      <>
-        <CircularProgress />
-      </>
+      <Grid container spacing={3}>
+        {
+          (games as Array<IGame>).map((game) => (
+            <Grid key={`${game._id}`} item xs={12} md={6} lg={4}>
+              <Game data={game} admin={true}/>
+            </Grid>
+          ))
+        }
+      </Grid>
     )
   } else {
     return (
       <>
+        <CircularProgress/>
         <Typography component='h1' variant='body1'>Games not found</Typography>
       </>
     )

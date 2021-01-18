@@ -18,7 +18,7 @@ interface IProps {
   game: string
   id?: string,
   data?: ICard
-  purchased: boolean,
+  disabled: boolean,
   user?: boolean
 }
 
@@ -83,7 +83,7 @@ export default function GameCard (props: IProps) {
             </div>
           </CardContent>
           {
-            !props.purchased && (
+            !props.disabled && (
               <CardActions>
                 <Button size="small" onClick={handleClick}>Buy</Button>
               </CardActions>

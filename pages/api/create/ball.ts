@@ -162,7 +162,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       default: throw new Error('method is invalid')
     }
   } catch (error) {
-    console.log(error)
     res.status(400).json(
       JSON.stringify(
         {

@@ -3,7 +3,6 @@ import cors from 'cors'
 import dbConnect from 'utils/dbConnect'
 import Game, { IGame } from 'models/Game'
 import User, { IUser } from 'models/User'
-import { ICard } from 'models/Card'
 import PurchasedCard, { IPurchasedCard } from 'models/purchasedCard'
 import { initMiddleware, validate } from 'utils/middleware'
 import buyValidation from 'validation/buy.validation'
@@ -30,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ).populate('cards').populate('purchasedCards:')
         if (!game) throw new Error('game not found')
 
-        const card: ICard = game.cards.find(
+        const card = game.cards.find(
           (element) => `${element._id}` === req.query.id
         )
         if (!card) throw new Error('card not found')
@@ -45,7 +44,34 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const purchasedCard: IPurchasedCard = new PurchasedCard({
           user: req.body._id,
-          card: card._id
+          card: card._id,
+          score: [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
         })
 
         const newPurchasedCard = await purchasedCard.save()

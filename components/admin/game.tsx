@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Router from 'next/router'
 import Axios from 'axios'
 import styles from 'styles/components/infoGame.module.scss'
 
@@ -12,8 +12,6 @@ import Button from '@material-ui/core/Button'
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-
-import LaunchIcon from '@material-ui/icons/Launch'
 
 import { IGame } from 'models/Game'
 
@@ -32,7 +30,7 @@ export default function Game (props: IProps) {
     const loadGame = async () => {
       try {
         if (!game && props.id) {
-          const { data } = await Axios.get(`/api/game/${props.id}`, {
+          const { data } = await Axios.get(`/api/play/${props.id}`, {
             headers: {
               token: `${localStorage.getItem('BINGOAL_TOKEN')}`
             },
@@ -48,14 +46,41 @@ export default function Game (props: IProps) {
     setLoading(false)
   }, [])
 
+  const handleClickPlay = async () => {
+    try {
+      await Axios.put(`/api/play/${(game as IGame)._id}`, {}, {
+        headers: {
+          token: `${localStorage.getItem('BINGOAL_TOKEN')}`
+        }
+      })
+      Router.reload()
+    } catch (error) {
+      Router.reload()
+    }
+  }
+
+  const handleClickBall = async () => {
+    try {
+      await Axios.post(' /api/create/ball', {
+        game: `${(game as IGame)._id}`
+      }, {
+        headers: {
+          token: `${localStorage.getItem('BINGOAL_TOKEN')}`
+        }
+      })
+      Router.reload()
+    } catch (error) {
+      Router.reload()
+    }
+  }
+
   if (!loading && game) {
     return (
       <Card className={props.won ? styles.won : ''} variant='outlined'>
         <CardActions className={styles.actions}>
           <Typography color="textSecondary">{`ID: ${game._id}`}</Typography>
-          <Link href={props.admin ? `/admin/${game._id}` : `/game/${game._id}`}>
-            <Button size="small" endIcon={<LaunchIcon/>}>Open</Button>
-          </Link>
+          {!game.playing && !game.played && <Button size="small" onClick={handleClickPlay}>Play</Button>}
+          {game.playing && !game.played && <Button size="small" onClick={handleClickBall}>Ball</Button>}
         </CardActions>
         <CardContent className={styles.content}>
           <div>
