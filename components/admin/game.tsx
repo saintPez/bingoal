@@ -97,7 +97,7 @@ export default function Game (props: IProps) {
                 variant="inline"
                 format="yyyy-MM-dd"
                 margin="normal"
-                id="createdAt"
+                id={`createdAt#${game._id}`}
                 label="Created at"
                 value={new Date(game.createdAt)}
                 KeyboardButtonProps={{
@@ -115,7 +115,7 @@ export default function Game (props: IProps) {
                 variant="inline"
                 format="yyyy-MM-dd"
                 margin="normal"
-                id="gameDate"
+                id={`gameDate#${game._id}`}
                 label="Game date"
                 value={new Date(game.gameDate)}
                 KeyboardButtonProps={{

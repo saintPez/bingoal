@@ -55,7 +55,11 @@ export default function Me () {
         return <PurchasedGames/>
       }
       case 'Admin': {
-        return <Admin/>
+        return (
+          <>
+            <Admin/>
+          </>
+        )
       }
       default:
         return (<>

@@ -6,7 +6,8 @@
   flex-direction: column;
   box-sizing: border-box;
   padding: 1rem;
-  min-height: calc(100vh - 64px - 100px);
+  height: calc(100vh - 64px - 100px);
+  overflow: auto;
 }
 
 .main {
