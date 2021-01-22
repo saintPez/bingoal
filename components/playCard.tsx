@@ -1,4 +1,4 @@
-import Card from 'components/Card'
+import Card from 'components/card'
 
 export default function PlayCard ({ data, game }) {
   return (
