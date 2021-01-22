@@ -19,7 +19,8 @@ interface IProps {
   id?: string,
   data?: ICard
   disabled: boolean,
-  user?: boolean
+  user?: boolean,
+  score?: boolean[]
 }
 
 export default function GameCard (props: IProps) {
@@ -76,9 +77,13 @@ export default function GameCard (props: IProps) {
             </div>
             <div className={styles.content}>
               {
-                (card.data as Array<any>)?.map((ball) => (
+                props.score
+                  ? (card.data as Array<any>)?.map((ball, index) => (
+                  <Ball key={`${card._id}-${ball}`} ball={ball} disabled={props.score[index]}/>
+                    ))
+                  : (card.data as Array<any>)?.map((ball) => (
                   <Ball key={`${card._id}-${ball}`} ball={ball}/>
-                ))
+                    ))
               }
             </div>
           </CardContent>
