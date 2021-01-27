@@ -6,6 +6,7 @@ export default function Home(): JSX.Element {
       <Head>
         <title>HOME - BinGoal</title>
       </Head>
+      <main></main>
     </>
   )
 }
