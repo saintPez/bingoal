@@ -6,7 +6,7 @@ export default function Throw(validationErrors: ValidationError[]): void {
     throw new ValidationError(
       validationErrors[0].value,
       validationErrors[0].param,
-      validationErrors[0].type
+      validationErrors[0].msg
     )
   else {
     let message: string

@@ -1,6 +1,7 @@
 export default class ValidationError extends Error {
   value: unknown
   param: string
+  msg: string
 
   constructor(value: unknown, param: string, message: string) {
     super(`${param} ${message}`)
@@ -12,5 +13,6 @@ export default class ValidationError extends Error {
     this.name = 'ValidationError'
     this.value = value
     this.param = param
+    this.msg = message
   }
 }
