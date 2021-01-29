@@ -1,4 +1,6 @@
 export default class MethodError extends Error {
+  msg: string
+
   constructor(method: string) {
     super(`Method ${method} is invalid`)
 
@@ -7,5 +9,6 @@ export default class MethodError extends Error {
     }
 
     this.name = 'MethodError'
+    this.msg = this.message
   }
 }

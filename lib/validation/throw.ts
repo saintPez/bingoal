@@ -6,10 +6,10 @@ export default function Throw(validationErrors: ValidationError[]): void {
     throw new ValidationError(
       validationErrors[0].value,
       validationErrors[0].param,
-      validationErrors[0].msg
+      validationErrors[0].message
     )
   else {
-    let message: string
+    let message = ''
     for (const validationError of validationErrors) {
       message += `${validationError.message} \n`
     }

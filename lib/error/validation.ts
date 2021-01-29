@@ -4,7 +4,7 @@ export default class ValidationError extends Error {
   msg: string
 
   constructor(value: unknown, param: string, message: string) {
-    super(`${param} ${message}`)
+    super(message)
 
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ValidationError)
@@ -13,6 +13,6 @@ export default class ValidationError extends Error {
     this.name = 'ValidationError'
     this.value = value
     this.param = param
-    this.msg = message
+    this.msg = this.message
   }
 }

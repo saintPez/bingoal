@@ -5,13 +5,19 @@ import ValidationError from 'lib/error/validation'
 
 export default function validate(email: string, password: string): void {
   const validationErrors: ValidationError[] = []
+
   if (!validator.isEmail(email))
     validationErrors.push(
-      new ValidationError(email, 'Email', 'must be a valid email')
+      new ValidationError(email, 'Email', 'Email is not a valid email')
     )
-  if (!validator.isStrongPassword(password))
+  if (!validator.isStrongPassword(password, { minSymbols: 0, minNumbers: 0 }))
     validationErrors.push(
-      new ValidationError(password, 'Password', 'must be a valid password')
+      new ValidationError(
+        password,
+        'Password',
+        'Password is not a strong password'
+      )
     )
-  Throw(validationErrors)
+
+  if (validationErrors.length) Throw(validationErrors)
 }

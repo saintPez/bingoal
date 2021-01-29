@@ -9,6 +9,8 @@ import User, { IUser } from 'lib/database/models/user'
 import MethodError from 'lib/error/method'
 import ValidationError from 'lib/error/validation'
 
+import validationLogin from 'lib/validation/login'
+
 export default async function Login(
   req: NextApiRequest,
   res: NextApiResponse
@@ -16,6 +18,8 @@ export default async function Login(
   try {
     await Config()
     if (req.method !== 'POST') throw new MethodError(`${req.method}`)
+
+    validationLogin(req.body.email, req.body.password)
 
     const user: IUser = await User.findOne({
       email: req.body.email,
@@ -44,7 +48,9 @@ export default async function Login(
       token,
     })
   } catch (error) {
-    console.log(error)
-    res.status(400).json({ error: `${error.name}: ${error.message}` })
+    if (error.name === 'InternalError') console.log(error)
+    res.status(400).json({
+      error: error.errors || error || `${error.name}: ${error.message}`,
+    })
   }
 }
