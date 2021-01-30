@@ -6,7 +6,6 @@ import jwt, { Secret } from 'jsonwebtoken'
 import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
-import MethodError from 'lib/error/method'
 import ValidationError from 'lib/error/validation'
 
 import validationLogin from 'lib/validation/login'
@@ -16,9 +15,7 @@ export default async function Login(
   res: NextApiResponse
 ): Promise<void> {
   try {
-    await Config()
-    if (req.method !== 'POST') throw new MethodError(`${req.method}`)
-
+    await Config({ req, method: 'POST' })
     validationLogin(req.body.email, req.body.password)
 
     const user: IUser = await User.findOne({
@@ -48,9 +45,15 @@ export default async function Login(
       token,
     })
   } catch (error) {
-    if (error.name === 'InternalError') console.log(error)
-    res.status(400).json({
-      error: error.errors || error || `${error.name}: ${error.message}`,
-    })
+    if (error.name === 'InternalError') {
+      console.log(error)
+      res.status(500).json({
+        error: `${error.name}: ${error.message}`,
+      })
+    } else {
+      res.status(400).json({
+        error: error.errors || error || `${error.name}: ${error.message}`,
+      })
+    }
   }
 }
