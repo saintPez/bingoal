@@ -40,6 +40,7 @@ const userSchema = new Schema({
     },
     data: {
       type: String,
+      unique: true,
       required: true,
     },
   },

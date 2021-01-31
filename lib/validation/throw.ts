@@ -3,10 +3,9 @@ import ValidationErrors from 'lib/error/validations'
 
 export default function Throw(validationErrors: ValidationError[]): void {
   if (validationErrors.length === 1)
-    throw new ValidationError(
-      validationErrors[0].value,
-      validationErrors[0].param,
-      validationErrors[0].message
+    throw new ValidationErrors(
+      `${validationErrors[0].message} \n`,
+      validationErrors
     )
   else {
     let message = ''

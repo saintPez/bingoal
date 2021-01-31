@@ -7,7 +7,6 @@ import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
 import ValidationError from 'lib/error/validation'
-
 import validationLogin from 'lib/validation/login'
 
 export default async function Login(
@@ -15,7 +14,7 @@ export default async function Login(
   res: NextApiResponse
 ): Promise<void> {
   try {
-    await Config({ req, method: 'POST' })
+    await Config({ req, method: ['POST'] })
     validationLogin(req.body.email, req.body.password)
 
     const user: IUser = await User.findOne({
@@ -52,7 +51,7 @@ export default async function Login(
       })
     } else {
       res.status(400).json({
-        error: error.errors || error || `${error.name}: ${error.message}`,
+        error: error.errors || `${error.name}: ${error.message}`,
       })
     }
   }
