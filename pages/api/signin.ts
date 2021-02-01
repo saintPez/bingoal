@@ -7,15 +7,15 @@ import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
 import ValidationError from 'lib/error/validation'
-import validationLogin from 'lib/validation/login'
+import validationSignin from 'lib/validation/signin'
 
-export default async function Login(
+export default async function Signin(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
   try {
     await Config({ req, method: ['POST'] })
-    validationLogin(req.body.email, req.body.password)
+    validationSignin(req.body.email, req.body.password)
 
     const user: IUser = await User.findOne({
       email: req.body.email,
