@@ -5,16 +5,16 @@ export interface IUser extends Document {
   name: string
   avatar_url: string
   email: {
-    private: boolean
+    private?: boolean
     data: string
   }
   password: string
   birth_date: {
-    private: boolean
+    private?: boolean
     data: Date
   }
   country: {
-    private: boolean
+    private?: boolean
     data: string
   }
   language: string

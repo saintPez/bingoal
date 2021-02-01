@@ -6,6 +6,8 @@ import jwt, { Secret } from 'jsonwebtoken'
 import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
+import ValidationError from 'lib/error/validation'
+import ValidationErrors from 'lib/error/validations'
 import validationSignup from 'lib/validation/signup'
 
 export default async function Login(
@@ -20,6 +22,11 @@ export default async function Login(
       req.body.password,
       req.body.birth_date
     )
+
+    if (await User.findOne({ 'email.data': req.body.email }))
+      throw new ValidationErrors('Email is alrady use \n', [
+        new ValidationError(req.body.email, 'email', 'Email is alrady use'),
+      ])
 
     const salt = await bcrypt.genSalt(10)
 
