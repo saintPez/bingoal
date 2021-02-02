@@ -46,18 +46,7 @@ export default async function Login(
     )
 
     res.status(200).json({
-      user: {
-        _id: user._id,
-        name: user.name,
-        avatar_url: user.avatar_url,
-        email: user.email,
-        birth_date: user.birth_date,
-        country: user.country,
-        language: user.language,
-        verified: user.verified,
-        baned: user.baned,
-        admin: user.admin,
-      },
+      user,
       token,
     })
   } catch (error) {
