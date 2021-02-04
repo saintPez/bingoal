@@ -35,6 +35,7 @@ export default async function Login(
       email: { data: req.body.email },
       password: await bcrypt.hash(req.body.password, salt),
       birth_date: { data: new Date(req.body.birth_date) },
+      zone: { private: true, data: 'America/Bogota' },
     }).save()
 
     const token: Secret = await jwt.sign(

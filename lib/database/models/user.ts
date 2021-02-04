@@ -13,7 +13,7 @@ export interface IUser extends Document {
     private?: boolean
     data: Date
   }
-  country: {
+  time_zone: {
     private?: boolean
     data: string
   }
@@ -58,14 +58,14 @@ const userSchema = new Schema({
       required: true,
     },
   },
-  country: {
+  time_zone: {
     private: {
       type: Boolean,
       default: false,
     },
     data: {
       type: String,
-      default: 'none',
+      required: true,
     },
   },
   language: {

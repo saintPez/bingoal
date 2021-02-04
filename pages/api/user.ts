@@ -1,14 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-// import bcrypt from 'bcrypt'
-// import jwt, { Secret } from 'jsonwebtoken'
-
 import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
-
-// import ValidationError from 'lib/error/validation'
-// import ValidationErrors from 'lib/error/validations'
-// import validationSignin from 'lib/validation/signin'
 
 export default async function Signin(
   req: NextApiRequest,
@@ -39,11 +32,11 @@ export default async function Signin(
             '$birth_date',
           ],
         },
-        country: {
+        time_zone: {
           $cond: [
-            { $eq: ['$country.private', true] },
+            { $eq: ['$time_zone.private', true] },
             { private: true },
-            '$country',
+            '$time_zone',
           ],
         },
         avatar_url: 1,
