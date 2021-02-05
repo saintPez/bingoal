@@ -7,7 +7,8 @@ export default function validate(
   name: string,
   email: string,
   password: string,
-  birth_date: Date
+  birth_date: Date,
+  time_zone?: string
 ): void {
   const validationErrors: ValidationError[] = []
 
@@ -22,6 +23,12 @@ export default function validate(
       birth_date,
       'birth_date',
       'Birth date must be a number'
+    )
+  if (!time_zone && typeof time_zone !== 'string')
+    throw new ValidationError(
+      time_zone,
+      'time_zone',
+      'Time zone must be a string'
     )
 
   if (!validator.isLength(name, { min: 3 }))

@@ -20,7 +20,8 @@ export default async function Login(
       req.body.name,
       req.body.email,
       req.body.password,
-      req.body.birth_date
+      req.body.birth_date,
+      req.body.time_zone
     )
 
     if (await User.findOne({ 'email.data': req.body.email }))
@@ -35,7 +36,7 @@ export default async function Login(
       email: { data: req.body.email },
       password: await bcrypt.hash(req.body.password, salt),
       birth_date: { data: new Date(req.body.birth_date) },
-      zone: { private: true, data: 'America/Bogota' },
+      time_zone: { data: req.body.time_zone },
     }).save()
 
     const token: Secret = await jwt.sign(
