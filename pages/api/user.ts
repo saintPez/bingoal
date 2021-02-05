@@ -14,7 +14,14 @@ export default async function Signin(
     const limit =
       parseInt(req.query.limit as string) | parseInt(req.body.limit) | 20
 
-    // const countDocuments = await User.countDocuments()
+    const countDocuments = await User.countDocuments()
+    let last_document: number
+
+    if (limit === 0 || ofset + limit >= countDocuments) {
+      if (ofset >= countDocuments) last_document = null
+      else last_document = -1
+    } else last_document = ofset + limit
+
     const user: IUser[] = await User.find(
       {},
       {
@@ -57,6 +64,7 @@ export default async function Signin(
     res.status(200).json({
       success: true,
       user,
+      last_document: last_document,
     })
   } catch (error) {
     if (error.name === 'InternalError') {
