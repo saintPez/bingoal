@@ -1,6 +1,6 @@
 import validator from 'validator'
 
-import Throw from './throw'
+import Throw from 'lib/validation/throw'
 import ValidationError from 'lib/error/validation'
 
 export default function validate(
@@ -14,16 +14,20 @@ export default function validate(
 
   if (typeof name !== 'string')
     throw new ValidationError(name, 'name', 'Name must be a string')
+
   if (typeof email !== 'string')
     throw new ValidationError(email, 'email', 'Email must be a string')
+
   if (typeof password !== 'string')
     throw new ValidationError(password, 'password', 'Password must be a string')
+
   if (typeof birth_date !== 'number')
     throw new ValidationError(
       birth_date,
       'birth_date',
       'Birth date must be a number'
     )
+
   if (!time_zone && typeof time_zone !== 'string')
     throw new ValidationError(
       time_zone,

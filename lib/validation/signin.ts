@@ -1,6 +1,6 @@
 import validator from 'validator'
 
-import Throw from './throw'
+import Throw from 'lib/validation/throw'
 import ValidationError from 'lib/error/validation'
 
 export default function validate(email: string, password: string): void {
@@ -8,6 +8,7 @@ export default function validate(email: string, password: string): void {
 
   if (typeof email !== 'string')
     throw new ValidationError(email, 'email', 'Email must be a string')
+
   if (typeof password !== 'string')
     throw new ValidationError(password, 'password', 'Password must be a string')
 
@@ -15,6 +16,7 @@ export default function validate(email: string, password: string): void {
     validationErrors.push(
       new ValidationError(email, 'email', 'Email is not a valid email')
     )
+
   if (
     !validator.isStrongPassword(password, {
       minSymbols: 0,

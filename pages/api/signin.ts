@@ -10,10 +10,10 @@ import ValidationError from 'lib/error/validation'
 import ValidationErrors from 'lib/error/validations'
 import validationSignin from 'lib/validation/signin'
 
-export default async function Signin(
+export default async (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void> {
+): Promise<void> => {
   try {
     await Config({ req, method: ['POST'] })
     validationSignin(req.body.email, req.body.password)
@@ -49,11 +49,13 @@ export default async function Signin(
   } catch (error) {
     if (error.name === 'InternalError') {
       console.log(error)
-      res.status(500).json({
+      res.status(error.status || 500).json({
+        success: false,
         error: `${error.name}: ${error.message}`,
       })
     } else {
-      res.status(400).json({
+      res.status(error.status || 400).json({
+        success: false,
         error: error.errors || `${error.name}: ${error.message}`,
       })
     }
