@@ -12,7 +12,7 @@ export default async (
   try {
     await Config({ req, method: ['GET', 'PUT', 'DELETE'], auth: true })
 
-    const profile: IUser = User.findById(req.body._id)
+    const profile: IUser = await User.findById(req.body._id)
 
     if (req.method === 'GET') {
       let user: IUser
@@ -61,10 +61,11 @@ export default async (
       if (!(profile.admin || profile._id === req.query.id))
         throw new AdminError('You need to be an admin to access')
 
-      const update = req.body.update
+      const update = req.body
+      delete update._id
 
-      await User.updateOne({ _id: req.query.id as string }, update)
-      const user: IUser = User.findById(req.query.id as string)
+      await User.updateOne({ _id: req.query.id as string }, { ...update })
+      const user: IUser = await User.findById(req.query.id as string)
 
       res.status(200).json({
         success: true,

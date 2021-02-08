@@ -12,7 +12,7 @@ export default async (
   try {
     await Config({ req, method: 'GET', auth: true })
 
-    const profile: IUser = User.findById(req.body._id)
+    const profile: IUser = await User.findById(req.body._id)
 
     const ofset =
       parseInt(req.query.ofset as string) | parseInt(req.body.ofset) | 0
