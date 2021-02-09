@@ -3,8 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
-// import AuthError from 'lib/error/auth'
-
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
