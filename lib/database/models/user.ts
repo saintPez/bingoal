@@ -1,5 +1,7 @@
 import { Schema, model, models, Document } from 'mongoose'
 
+import { IGame } from 'lib/database/models/game'
+
 export interface IUser extends Document {
   _id: string
   name: string
@@ -18,9 +20,17 @@ export interface IUser extends Document {
     data: string
   }
   language: string
+  games: [
+    {
+      won: boolean
+      data: string | IGame
+    }
+  ]
   verified: boolean
   baned: boolean
   admin: boolean
+  createdAt: Date
+  updatedAt: Date
 }
 
 const userSchema = new Schema({
@@ -72,6 +82,18 @@ const userSchema = new Schema({
     type: String,
     default: 'en',
   },
+  games: [
+    {
+      won: {
+        type: Boolean,
+        default: false,
+      },
+      data: {
+        type: Schema.Types.ObjectId,
+        ref: 'Game',
+      },
+    },
+  ],
   verified: {
     type: Boolean,
     default: false,

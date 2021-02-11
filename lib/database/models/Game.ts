@@ -1,26 +1,29 @@
 import { Schema, model, models, Document } from 'mongoose'
 
+import { IUser } from 'lib/database/models/user'
+import { ICard } from 'lib/database/models/card'
+
 export interface IGame extends Document {
   _id: string
-  name: string
-  avatar_url: string
-  email: {
-    private?: boolean
-    data: string
-  }
-  password: string
-  birth_date: {
-    private?: boolean
-    data: Date
-  }
-  time_zone: {
-    private?: boolean
-    data: string
-  }
-  language: string
-  verified: boolean
-  baned: boolean
-  admin: boolean
+  played: boolean
+  playing: boolean
+  cards: [
+    {
+      purchased: boolean
+      won: boolean
+      user?: string | IUser
+      data: string | ICard
+    }
+  ]
+  balls: [
+    {
+      saved: boolean
+      data: number
+    }
+  ]
+  game_date: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 const gameSchema = new Schema({
@@ -42,9 +45,14 @@ const gameSchema = new Schema({
         type: Boolean,
         default: false,
       },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
       data: {
         type: Schema.Types.ObjectId,
         ref: 'Card',
+        unique: true,
       },
     },
   ],
