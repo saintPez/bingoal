@@ -23,10 +23,12 @@ type IMethod =
   | 'TRACE'
   | 'PATCH'
 
+type IAuth = null | true | false
+
 interface IConfig {
   req: NextApiRequest
   method?: IMethod | IMethod[]
-  auth?: boolean
+  auth?: IAuth | IAuth[]
 }
 
 export default async function Config(config?: IConfig): Promise<void> {
@@ -36,24 +38,38 @@ export default async function Config(config?: IConfig): Promise<void> {
   await Connection()
 
   if (config) {
-    method: if (config.method) {
-      if (Array.isArray(config.method)) {
-        for (const method of config.method) {
-          if (method === config.req.method) {
-            break method
-          }
-        }
+    if (config.method) {
+      if (!Array.isArray(config.method) && config.method !== config.req.method)
         throw new MethodError(config.req.method)
-      } else if (config.method !== config.req.method)
+      else if (
+        Array.isArray(config.method) &&
+        !config.method.find((method) => method === config.req.method)
+      )
         throw new MethodError(config.req.method)
     }
-  }
 
-  if (config.auth) {
-    const payload = (await jwt.verify(
-      config.req.headers.token || config.req.body.token,
-      process.env.TOKEN_SECRET
-    )) as IPayload
-    config.req.body._id = payload._id
+    if (config.auth === null || config.auth) {
+      if (Array.isArray(config.method) && Array.isArray(config.auth)) {
+        const index = config.method.findIndex(
+          (method) => method === config.req.method
+        )
+        if (config.auth[index] === null || config.auth[index])
+          await Auth(config.req, !(config.auth[index] === null))
+      } else await Auth(config.req, !(config.auth === null))
+    }
   }
+}
+
+export async function Auth(
+  req: NextApiRequest,
+  $throw: boolean
+): Promise<void> {
+  await jwt.verify(
+    req.headers.token || req.body.token,
+    process.env.TOKEN_SECRET,
+    (error, decoded: IPayload) => {
+      if (!error) req.body._id = decoded._id
+      else if ($throw) throw error
+    }
+  )
 }
