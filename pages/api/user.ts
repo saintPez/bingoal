@@ -63,6 +63,7 @@ export default async (
           baned: 1,
           admin: 1,
           name: 1,
+          games: 1,
           createdAt: 1,
           updatedAt: 1,
         },

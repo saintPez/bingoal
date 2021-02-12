@@ -17,7 +17,7 @@ export default async (
     if (req.method === 'GET') {
       let user: IUser
 
-      if (profile.admin || profile._id === req.query.id)
+      if (profile.admin || `${profile._id}` === `${req.query.id}`)
         user = await User.findById(req.query.id as string)
       else {
         user = await User.findById(req.query.id as string, {
@@ -48,6 +48,7 @@ export default async (
           baned: 1,
           admin: 1,
           name: 1,
+          games: 1,
           createdAt: 1,
           updatedAt: 1,
         })
@@ -58,7 +59,7 @@ export default async (
         user,
       })
     } else if (req.method === 'PUT') {
-      if (!(profile.admin || profile._id === req.query.id))
+      if (!(profile.admin || `${profile._id}` === `${req.query.id}`))
         throw new AdminError('You need to be an admin to access')
 
       const update = req.body
@@ -72,7 +73,7 @@ export default async (
         user,
       })
     } else {
-      if (!(profile.admin || profile._id === req.query.id))
+      if (!(profile.admin || `${profile._id}` === `${req.query.id}`))
         throw new AdminError('You need to be an admin to access')
 
       await User.findByIdAndDelete(req.query.id as string)
