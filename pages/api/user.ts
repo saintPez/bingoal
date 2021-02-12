@@ -8,7 +8,7 @@ export default async (
   res: NextApiResponse
 ): Promise<void> => {
   try {
-    await Config({ req, method: 'GET', auth: true })
+    await Config({ req, method: 'GET', auth: null })
 
     const profile: IUser = await User.findById(req.body._id)
 
@@ -27,7 +27,7 @@ export default async (
 
     let user: IUser[]
 
-    if (profile.admin) {
+    if (profile?.admin) {
       user = await User.find({}, null, {
         skip: ofset,
         limit: limit,

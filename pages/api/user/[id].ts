@@ -10,14 +10,18 @@ export default async (
   res: NextApiResponse
 ): Promise<void> => {
   try {
-    await Config({ req, method: ['GET', 'PUT', 'DELETE'], auth: true })
+    await Config({
+      req,
+      method: ['GET', 'PUT', 'DELETE'],
+      auth: [null, true, true],
+    })
 
     const profile: IUser = await User.findById(req.body._id)
 
     if (req.method === 'GET') {
       let user: IUser
 
-      if (profile.admin || `${profile._id}` === `${req.query.id}`)
+      if (profile?.admin || `${profile?._id}` === `${req.query.id}`)
         user = await User.findById(req.query.id as string)
       else {
         user = await User.findById(req.query.id as string, {
