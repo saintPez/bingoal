@@ -84,12 +84,12 @@ export default async (
       console.log(error)
       res.status(error.status || 500).json({
         success: false,
-        error: `${error.name}: ${error.message}`,
+        error: { ...error, name: error.name, message: error.message },
       })
     } else {
       res.status(error.status || 400).json({
         success: false,
-        error: error.errors || `${error.name}: ${error.message}`,
+        error: { ...error, name: error.name, message: error.message },
       })
     }
   }

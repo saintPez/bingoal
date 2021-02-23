@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-useless-escape */
+
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import bcrypt from 'bcrypt'
 import jwt, { Secret } from 'jsonwebtoken'
+import Joi from 'joi'
 
 import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
-import ValidationError from 'lib/error/validation'
-import ValidationErrors from 'lib/error/validations'
-import validationSignup from 'lib/validation/signup'
+import validation from 'lib/validation/user'
 
 export default async (
   req: NextApiRequest,
@@ -16,18 +18,29 @@ export default async (
 ): Promise<void> => {
   try {
     await Config({ req, method: 'POST' })
-    validationSignup(
-      req.body.name,
-      req.body.email,
-      req.body.password,
-      req.body.birth_date,
-      req.body.time_zone
-    )
+    await validation.validateAsync({
+      name: req.body.name,
+      'email.data': req.body.email,
+      password: req.body.password,
+      'birth_date.data': req.body.birth_date,
+      'time_zone.data': req.body.time_zone,
+    })
 
-    if (await User.findOne({ 'email.data': req.body.email }))
-      throw new ValidationErrors('Email is alrady use \n', [
-        new ValidationError(req.body.email, 'email', 'Email is alrady use'),
-      ])
+    {
+      const user: IUser = await User.findOne({
+        'email.data': req.body.email,
+      })
+
+      const obj = Joi.object({
+        email: Joi.custom((value, helpers) => {
+          if (user) {
+            return helpers.message(`\"email\" is already in use` as any)
+          }
+          return value
+        }, 'custom valid'),
+      })
+      await obj.validateAsync({ email: req.body.email })
+    }
 
     const salt = await bcrypt.genSalt(10)
 
@@ -57,12 +70,12 @@ export default async (
       console.log(error)
       res.status(error.status || 500).json({
         success: false,
-        error: `${error.name}: ${error.message}`,
+        error: { ...error, name: error.name, message: error.message },
       })
     } else {
       res.status(error.status || 400).json({
         success: false,
-        error: error.errors || `${error.name}: ${error.message}`,
+        error: { ...error, name: error.name, message: error.message },
       })
     }
   }

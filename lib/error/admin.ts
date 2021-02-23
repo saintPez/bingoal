@@ -1,5 +1,4 @@
 export default class AdminError extends Error {
-  msg: string
   status: number
 
   constructor(message: string) {
@@ -10,7 +9,6 @@ export default class AdminError extends Error {
     }
 
     this.name = 'AdminError'
-    this.msg = this.message
     this.status = 403
   }
 }

@@ -5,6 +5,8 @@ import User, { IUser } from 'lib/database/models/user'
 
 import AdminError from 'lib/error/admin'
 
+import validation from 'lib/validation/user'
+
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -66,8 +68,10 @@ export default async (
       if (!(profile.admin || `${profile._id}` === `${req.query.id}`))
         throw new AdminError('You need to be an admin to access')
 
-      const update = req.body
+      const update = req.body.update || req.body
       delete update._id
+
+      await validation.validateAsync(update)
 
       await User.updateOne({ _id: req.query.id as string }, { ...update })
       const user: IUser = await User.findById(req.query.id as string)
@@ -91,12 +95,12 @@ export default async (
       console.log(error)
       res.status(error.status || 500).json({
         success: false,
-        error: `${error.name}: ${error.message}`,
+        error: { ...error, name: error.name, message: error.message },
       })
     } else {
       res.status(error.status || 400).json({
         success: false,
-        error: error.errors || `${error.name}: ${error.message}`,
+        error: { ...error, name: error.name, message: error.message },
       })
     }
   }
