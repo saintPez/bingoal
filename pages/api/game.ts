@@ -2,10 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import Config from 'lib/config'
 import Card, { ICard } from 'lib/database/models/card'
-import Game from 'lib/database/models/game'
+import Game, { IGame } from 'lib/database/models/game'
 
-import validation from 'lib/validation/card'
-import createCard from 'lib/create/card'
+import validation from 'lib/validation/game'
 
 export default async (
   req: NextApiRequest,
@@ -28,50 +27,40 @@ export default async (
         else last_document = -1
       } else last_document = ofset + limit
 
-      const card: ICard[] = await Card.find({}, null, {
+      const game: IGame[] = await Game.find({}, null, {
         skip: ofset,
         limit: limit,
       })
 
       res.status(200).json({
         success: true,
-        card,
+        game,
         last_document: last_document,
       })
     } else {
-      let card: ICard
+      await validation.validateAsync({ game_date: req.body.game.game_date })
 
-      if (!req.body.card) {
-        const data = await createCard()
-        card = await new Card({ data: data }).save()
-      } else {
-        await validation.validateAsync({ data: req.body.card })
-
-        await Card.findOne(
-          {
-            data: { $all: req.body.card },
-          },
-          null,
-          {},
-          async (error, doc) => {
-            if (doc) card = doc
-            else card = await new Card({ data: req.body.card }).save()
-          }
-        )
-      }
-
-      await Game.updateMany(
-        { played: false, playing: false },
-        {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          $push: { cards: { purchased: false, won: false, data: card } } as any,
-        },
-        { multi: true }
+      const cards = ((await Game.find({}, { _id: 1 })) as ICard[]).map(
+        (card) => ({
+          data: card._id,
+        })
       )
+
+      const balls = createBalls().map((ball) => ({
+        data: ball,
+      }))
+
+      const game: IGame = await new Game({
+        played: false,
+        playing: false,
+        cards,
+        balls,
+        game_date: new Date(req.body.game.game_date),
+      }).save()
 
       res.status(200).json({
         success: true,
-        card,
+        game,
       })
     }
   } catch (error) {
@@ -88,4 +77,18 @@ export default async (
       })
     }
   }
+}
+
+function createBalls() {
+  const result: Array<number> = []
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const BINGO = [...(Array(75).keys() as any)].map((ball) => ball + 1)
+
+  for (let i = 0; i < 75; i++) {
+    result.push(
+      ...BINGO.splice(Math.floor(Math.random() * (BINGO.length - 0)) + 0, 1)
+    )
+  }
+  return result
 }
