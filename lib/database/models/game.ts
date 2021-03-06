@@ -52,7 +52,6 @@ const gameSchema = new Schema({
       data: {
         type: Schema.Types.ObjectId,
         ref: 'Card',
-        unique: true,
       },
       score: [
         {

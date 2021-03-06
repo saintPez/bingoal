@@ -38,9 +38,13 @@ export default async (
         last_document: last_document,
       })
     } else {
-      await validation.validateAsync({ game_date: req.body.game.game_date })
+      const game_date = req.body.game.game_date || new Date().getTime()
 
-      const cards = ((await Game.find({}, { _id: 1 })) as ICard[]).map(
+      await validation.validateAsync({
+        game_date,
+      })
+
+      const cards = ((await Card.find({}, { _id: 1 })) as ICard[]).map(
         (card) => ({
           data: card._id,
         })
@@ -55,7 +59,7 @@ export default async (
         playing: false,
         cards,
         balls,
-        game_date: new Date(req.body.game.game_date),
+        game_date: new Date(game_date),
       }).save()
 
       res.status(200).json({
