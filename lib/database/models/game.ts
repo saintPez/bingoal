@@ -9,14 +9,17 @@ export interface IGame extends Document {
   playing: boolean
   cards: [
     {
+      _id: string
       purchased: boolean
       won: boolean
       user?: string | IUser
       data: string | ICard
+      score: boolean[]
     }
   ]
   balls: [
     {
+      _id: string
       saved: boolean
       data: number
     }
@@ -53,38 +56,36 @@ const gameSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Card',
       },
-      score: [
-        {
-          type: Boolean,
-          default: [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-          ],
-        },
-      ],
+      score: {
+        type: [Boolean],
+        default: [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+        ],
+      },
     },
   ],
   balls: [

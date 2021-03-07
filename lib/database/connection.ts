@@ -12,7 +12,9 @@ export default async function Connection(): Promise<void> {
 
     connection.once('connected', () => {
       console.log(`Info: Database is connected to '${process.env.MONGO_URI}'`)
-      import('./models/user')
+      import('lib/database/models/user')
+      import('lib/database/models/card')
+      import('lib/database/models/game')
     })
   } catch (error) {
     console.log(`${error.name}: ${error.message}`)

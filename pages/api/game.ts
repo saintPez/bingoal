@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import Config from 'lib/config'
+import User, { IUser } from 'lib/database/models/user'
 import Card, { ICard } from 'lib/database/models/card'
 import Game, { IGame } from 'lib/database/models/game'
+
+import AdminError from 'lib/error/admin'
 
 import validation from 'lib/validation/game'
 
@@ -38,7 +41,12 @@ export default async (
         last_document: last_document,
       })
     } else {
-      const game_date = req.body.game.game_date || new Date().getTime()
+      const profile: IUser = await User.findById(req.body._id)
+
+      if (!(profile.admin || `${profile._id}` === `${req.query.id}`))
+        throw new AdminError('You need to be an admin to access')
+
+      const game_date = req.body.game?.game_date || new Date().getTime()
 
       await validation.validateAsync({
         game_date,

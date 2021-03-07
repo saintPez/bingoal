@@ -13,9 +13,9 @@ export default async (
     const profile: IUser = await User.findById(req.body._id)
 
     const ofset =
-      parseInt(req.query.ofset as string) | parseInt(req.body.ofset) | 0
+      parseInt(req.query.ofset as string) || parseInt(req.body.ofset) || 0
     const limit =
-      parseInt(req.query.limit as string) | parseInt(req.body.limit) | 20
+      parseInt(req.query.limit as string) || parseInt(req.body.limit) || 20
 
     const countDocuments = await User.countDocuments()
     let last_document: number

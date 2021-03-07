@@ -22,6 +22,18 @@ export default async (
 
     if (req.method === 'GET') {
       const game: IGame = await Game.findById(req.query.id as string)
+        .populate({
+          path: 'cards',
+          populate: {
+            path: 'user',
+          },
+        })
+        .populate({
+          path: 'cards',
+          populate: {
+            path: 'data',
+          },
+        })
 
       res.status(200).json({
         success: true,
