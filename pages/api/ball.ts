@@ -72,9 +72,7 @@ export default async (
       { $set: { 'balls.$': { ...ball } } }
     )
 
-    game = await Game.findOne({ _id: req.query.game || req.body.game })
-
-    if (game.cards.find((card) => card.won === true))
+    if (cards.find((card) => card.won === true))
       await Game.updateOne(
         { _id: req.query.game || req.body.game },
         { played: true, playing: false }
