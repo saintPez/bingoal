@@ -39,12 +39,13 @@ export default async (
       })
 
     if (!game) throw new BingoalError('Game not found')
-    // if (game.played) throw new BingoalError('Game has already been played')
-    // if (!game.playing) throw new BingoalError('Game is not playing')
+    if (game.played) throw new BingoalError('Game has already been played')
+    if (!game.playing) throw new BingoalError('Game is not playing')
 
     const balls = game.balls.filter((ball) => ball.saved === false)
 
     const ball = balls[Math.floor(Math.random() * balls.length)]
+    ball.saved = true
 
     const cards = game.cards.filter((card) =>
       // card.purchased === true &&
@@ -57,7 +58,8 @@ export default async (
       )
       card.score[index] = true
 
-      if (!card.score.find((score) => score === false)) card.won = true
+      if (card.score.find((score) => score === false) === undefined)
+        card.won = true
 
       await Game.updateOne(
         { _id: req.query.game || req.body.game, 'cards._id': card._id },
@@ -65,12 +67,17 @@ export default async (
       )
     }
 
+    await Game.updateOne(
+      { _id: req.query.game || req.body.game, 'balls._id': ball._id },
+      { $set: { 'balls.$': { ...ball } } }
+    )
+
     game = await Game.findOne({ _id: req.query.game || req.body.game })
 
     if (game.cards.find((card) => card.won === true))
       await Game.updateOne(
         { _id: req.query.game || req.body.game },
-        { played: true }
+        { played: true, playing: false }
       )
 
     game = await Game.findOne({ _id: req.query.game || req.body.game })
