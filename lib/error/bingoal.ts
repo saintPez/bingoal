@@ -1,7 +1,7 @@
 export default class BingoalError extends Error {
   status: number
 
-  constructor(message: string) {
+  constructor(message: string, status?: number) {
     super(message)
 
     if (Error.captureStackTrace) {
@@ -9,6 +9,6 @@ export default class BingoalError extends Error {
     }
 
     this.name = 'BingoalError'
-    this.status = 404
+    this.status = status || 404
   }
 }

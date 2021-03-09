@@ -6,6 +6,7 @@ import Game, { IGame } from 'lib/database/models/game'
 
 import validation from 'lib/validation/game'
 import AdminError from 'lib/error/admin'
+import BingoalError from 'lib/error/bingoal'
 
 export default async (
   req: NextApiRequest,
@@ -18,23 +19,25 @@ export default async (
       auth: [false, true, true],
     })
 
+    const game: IGame = await Game.findById(req.query.id as string)
+      .populate({
+        path: 'cards',
+        populate: {
+          path: 'user',
+        },
+      })
+      .populate({
+        path: 'cards',
+        populate: {
+          path: 'data',
+        },
+      })
+
+    if (!game) throw new BingoalError('Game not found')
+
     const profile: IUser = await User.findById(req.body._id)
 
     if (req.method === 'GET') {
-      const game: IGame = await Game.findById(req.query.id as string)
-        .populate({
-          path: 'cards',
-          populate: {
-            path: 'user',
-          },
-        })
-        .populate({
-          path: 'cards',
-          populate: {
-            path: 'data',
-          },
-        })
-
       res.status(200).json({
         success: true,
         game,

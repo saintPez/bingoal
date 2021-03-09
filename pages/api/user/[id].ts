@@ -4,6 +4,7 @@ import Config from 'lib/config'
 import User, { IUser } from 'lib/database/models/user'
 
 import AdminError from 'lib/error/admin'
+import BingoalError from 'lib/error/bingoal'
 
 import validation from 'lib/validation/user'
 
@@ -20,46 +21,45 @@ export default async (
 
     const profile: IUser = await User.findById(req.body._id)
 
+    const user =
+      profile?.admin || `${profile?._id}` === `${req.query.id}`
+        ? await User.findById(req.query.id as string)
+        : await User.findById(req.query.id as string, {
+            email: {
+              $cond: [
+                { $eq: ['$email.private', true] },
+                { private: true },
+                '$email',
+              ],
+            },
+            birth_date: {
+              $cond: [
+                { $eq: ['$birth_date.private', true] },
+                { private: true },
+                '$birth_date',
+              ],
+            },
+            time_zone: {
+              $cond: [
+                { $eq: ['$time_zone.private', true] },
+                { private: true },
+                '$time_zone',
+              ],
+            },
+            avatar_url: 1,
+            language: 1,
+            verified: 1,
+            baned: 1,
+            admin: 1,
+            name: 1,
+            games: 1,
+            createdAt: 1,
+            updatedAt: 1,
+          })
+
+    if (!user) throw new BingoalError('User not found')
+
     if (req.method === 'GET') {
-      let user: IUser
-
-      if (profile?.admin || `${profile?._id}` === `${req.query.id}`)
-        user = await User.findById(req.query.id as string)
-      else {
-        user = await User.findById(req.query.id as string, {
-          email: {
-            $cond: [
-              { $eq: ['$email.private', true] },
-              { private: true },
-              '$email',
-            ],
-          },
-          birth_date: {
-            $cond: [
-              { $eq: ['$birth_date.private', true] },
-              { private: true },
-              '$birth_date',
-            ],
-          },
-          time_zone: {
-            $cond: [
-              { $eq: ['$time_zone.private', true] },
-              { private: true },
-              '$time_zone',
-            ],
-          },
-          avatar_url: 1,
-          language: 1,
-          verified: 1,
-          baned: 1,
-          admin: 1,
-          name: 1,
-          games: 1,
-          createdAt: 1,
-          updatedAt: 1,
-        })
-      }
-
       res.status(200).json({
         success: true,
         user,

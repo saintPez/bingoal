@@ -5,6 +5,7 @@ import User, { IUser } from 'lib/database/models/user'
 import Card, { ICard } from 'lib/database/models/card'
 
 import AdminError from 'lib/error/admin'
+import BingoalError from 'lib/error/bingoal'
 
 export default async (
   req: NextApiRequest,
@@ -17,11 +18,12 @@ export default async (
       auth: [false, true],
     })
 
+    const card: ICard = await Card.findById(req.query.id as string)
+    if (!card) throw new BingoalError('Card not found')
+
     const profile: IUser = await User.findById(req.body._id)
 
     if (req.method === 'GET') {
-      const card: ICard = await Card.findById(req.query.id as string)
-
       res.status(200).json({
         success: true,
         card,
