@@ -24,6 +24,38 @@ export default async (
         path: 'cards',
         populate: {
           path: 'user',
+          select: {
+            email: {
+              $cond: [
+                { $eq: ['$email.private', true] },
+                { private: true },
+                '$email',
+              ],
+            },
+            birth_date: {
+              $cond: [
+                { $eq: ['$birth_date.private', true] },
+                { private: true },
+                '$birth_date',
+              ],
+            },
+            time_zone: {
+              $cond: [
+                { $eq: ['$time_zone.private', true] },
+                { private: true },
+                '$time_zone',
+              ],
+            },
+            avatar_url: 1,
+            language: 1,
+            verified: 1,
+            baned: 1,
+            admin: 1,
+            name: 1,
+            games: 1,
+            createdAt: 1,
+            updatedAt: 1,
+          },
         },
       })
       .populate({
