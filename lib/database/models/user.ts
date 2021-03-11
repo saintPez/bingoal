@@ -22,6 +22,7 @@ export interface IUser extends Document {
   language: string
   games: [
     {
+      _id: string
       won: boolean
       data: string | IGame
     }

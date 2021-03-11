@@ -15,27 +15,30 @@ export default async (
   try {
     await Config({ req, method: 'POST', auth: true })
 
-    const card = req.query.card || req.body.card
+    const id = req.query.card || req.body.card
 
     await validation.validateAsync({
-      card,
+      card: id,
     })
 
     let game: IGame = await Game.findOne({
-      'cards._id': card,
+      played: false,
+      playing: false,
+      'cards._id': id,
       'cards.purchased': false,
     })
-    if (!game) throw new BingoalError('Came not found')
+    if (!game) throw new BingoalError('Card not found')
 
     const profile: IUser = await User.findById(req.body._id)
+    const card = game.cards.find((card) => `${card._id}` === `${id}`)
+    card.user = profile._id
+    card.purchased = true
 
-    await Game.updateOne(
-      { 'cards._id': card },
-      { $set: { 'cards.$': { purchased: true, user: profile._id } } }
-    )
+    await Game.updateOne({ 'cards._id': id }, { 'cards.$': { ...card } })
 
     if (
-      profile.games.find((element) => element.data === game._id) === undefined
+      profile.games.find((element) => `${element.data}` === `${game._id}`) ===
+      undefined
     )
       await User.updateOne(
         { _id: req.body._id },

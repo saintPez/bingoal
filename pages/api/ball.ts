@@ -47,9 +47,10 @@ export default async (
     const ball = balls[Math.floor(Math.random() * balls.length)]
     ball.saved = true
 
-    const cards = game.cards.filter((card) =>
-      // card.purchased === true &&
-      (card.data as ICard).data.find((number) => number === ball.data)
+    const cards = game.cards.filter(
+      (card) =>
+        card.purchased === true &&
+        (card.data as ICard).data.find((number) => number === ball.data)
     )
 
     for (const card of cards) {
@@ -58,8 +59,22 @@ export default async (
       )
       card.score[index] = true
 
-      if (card.score.find((score) => score === false) === undefined)
+      if (card.score.find((score) => score === false) === undefined) {
         card.won = true
+
+        const user: IUser = await User.findById(card.user)
+        const user_game = user.games.find(
+          (user_game) => `${user_game.data}` === `${game._id}`
+        )
+        user_game.won = true
+
+        await User.updateOne(
+          { _id: card.user as string, 'games.data': game._id },
+          {
+            'games.$': { ...user_game },
+          }
+        )
+      }
 
       await Game.updateOne(
         { _id: req.query.game || req.body.game, 'cards._id': card._id },
