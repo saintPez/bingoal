@@ -24,19 +24,14 @@ export default async (
 
     await validation.validateAsync({ game: req.query.game || req.body.game })
 
-    let game: IGame = await Game.findById(req.query.game || req.body.game)
-      .populate({
-        path: 'cards',
-        populate: {
-          path: 'user',
-        },
-      })
-      .populate({
-        path: 'cards',
-        populate: {
-          path: 'data',
-        },
-      })
+    let game: IGame = await Game.findById(
+      req.query.game || req.body.game
+    ).populate({
+      path: 'cards',
+      populate: {
+        path: 'data',
+      },
+    })
 
     if (!game) throw new BingoalError('Game not found')
     if (game.played) throw new BingoalError('Game has already been played')
@@ -93,19 +88,14 @@ export default async (
         { played: true, playing: false }
       )
 
-    game = await Game.findOne({ _id: req.query.game || req.body.game })
-      .populate({
-        path: 'cards',
-        populate: {
-          path: 'user',
-        },
-      })
-      .populate({
-        path: 'cards',
-        populate: {
-          path: 'data',
-        },
-      })
+    game = await Game.findOne({
+      _id: req.query.game || req.body.game,
+    }).populate({
+      path: 'cards',
+      populate: {
+        path: 'data',
+      },
+    })
 
     res.status(200).json({
       success: true,

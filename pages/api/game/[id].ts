@@ -19,51 +19,12 @@ export default async (
       auth: [false, true, true],
     })
 
-    const game: IGame = await Game.findById(req.query.id as string)
-      .populate({
-        path: 'cards',
-        populate: {
-          path: 'user',
-          select: {
-            email: {
-              $cond: [
-                { $eq: ['$email.private', true] },
-                { private: true },
-                '$email',
-              ],
-            },
-            birth_date: {
-              $cond: [
-                { $eq: ['$birth_date.private', true] },
-                { private: true },
-                '$birth_date',
-              ],
-            },
-            time_zone: {
-              $cond: [
-                { $eq: ['$time_zone.private', true] },
-                { private: true },
-                '$time_zone',
-              ],
-            },
-            avatar_url: 1,
-            language: 1,
-            verified: 1,
-            baned: 1,
-            admin: 1,
-            name: 1,
-            games: 1,
-            createdAt: 1,
-            updatedAt: 1,
-          },
-        },
-      })
-      .populate({
-        path: 'cards',
-        populate: {
-          path: 'data',
-        },
-      })
+    const game: IGame = await Game.findById(req.query.id as string).populate({
+      path: 'cards',
+      populate: {
+        path: 'data',
+      },
+    })
 
     if (!game) throw new BingoalError('Game not found')
 
@@ -85,7 +46,10 @@ export default async (
 
       await validation.validateAsync(update)
 
-      await Game.updateOne({ _id: req.query.id as string }, { ...update })
+      await Game.updateOne(
+        { _id: req.query.id as string, played: false },
+        { ...update }
+      )
       const game: IGame = await Game.findById(req.query.id as string)
 
       res.status(200).json({
