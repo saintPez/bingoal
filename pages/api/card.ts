@@ -16,9 +16,9 @@ export default async (
 
     if (req.method === 'GET') {
       const ofset =
-        parseInt(req.query.ofset as string) | parseInt(req.body.ofset) | 0
+        parseInt(req.query.ofset as string) || parseInt(req.body.ofset) || 0
       const limit =
-        parseInt(req.query.limit as string) | parseInt(req.body.limit) | 20
+        parseInt(req.query.limit as string) || parseInt(req.body.limit) || 20
 
       const countDocuments = await Card.countDocuments()
       let last_document: number
